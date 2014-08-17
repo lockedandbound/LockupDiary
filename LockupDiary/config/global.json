@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "LockupDiary": {
+            "applicationId": "0ZyEjbKzHUvBQMVMMQjl7wy2vFm49jIcxA4eFGvE", 
+            "masterKey": "Mf7ntI3tLeK3iiBVSKePgg0eJRt1h1knLTFiZ0bn"
+        }, 
+        "_default": {
+            "link": "LockupDiary"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.2.19"
+    }
+}
