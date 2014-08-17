@@ -1,3 +1,5 @@
+var _ = require('underscore');
+
 // These two lines are required to initialize Express in Cloud Code.
 var express = require('express');
 var parseExpressHttpsRedirect = require('parse-express-https-redirect');
@@ -11,8 +13,17 @@ app.use(express.bodyParser());    // Middleware for reading request body
 app.use(express.cookieParser('THIS_IS_A_SECRET'));
 app.use(parseExpressCookieSession({ cookie: { maxAge: 3600000 } }));
 
+var builtInLog = console.log;
+console.log = function() {
+  var args = _.map(Array.prototype.slice.call(arguments, 1), function(arg) {
+    return JSON.stringify(arg);
+  });
+  builtInLog(args.join(' '));
+};
+
 // Routes
 app.get('/hello', function(req, res) {
+  console.log('hello', 'hello', {key: 'value'});
   res.render('hello', { message: 'Congrats, you just set up your app!' });
 });
 
