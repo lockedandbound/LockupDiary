@@ -5,6 +5,7 @@
   </head>
   <body>
     <h1>Sign Up</h1>
+    <div id="error"><%= error ? error : '' %></div>
     <div>
       <form action="/signup" method="POST">
         <label for="username">User name</label>

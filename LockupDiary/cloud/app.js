@@ -40,17 +40,16 @@ app.get('/', function(req, res) {
       }
     });
   } else {
-     res.redirect('login');
+     res.redirect('/login');
   }
 });
 
 app.get('/signup', function(req, res) {
-  res.render('signup');
+  res.render('signup', {error: null});
 });
 
 app.post('/signup', function(req, res) {
   var user = new Parse.User();
-  console.log(req.body.username);
   user.set('username', req.body.username);
   user.set('password', req.body.password);
   user.set('email', req.body.email);
@@ -61,7 +60,7 @@ app.post('/signup', function(req, res) {
     },
     error: function(user, error) {
       console.log("Error signing up: ", error);
-      res.render('signup', {message: error.message});
+      res.render('signup', {error: 'ERROR: ' + error.message});
     }
   });
 });
