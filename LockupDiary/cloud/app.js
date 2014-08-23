@@ -77,6 +77,7 @@ app.post('/signup', function(req, res) {
 });
 
 app.post('/events', function(req, res) {
+  var user = Parse.User.current();
   var event = new Event();
   var sortTime, details;
   event.set('type', req.body.type);
@@ -90,9 +91,10 @@ app.post('/events', function(req, res) {
   else {
     throw new Error("Unrecognized type: " + type)
   }
+  event.set('user', user);
   event.set('event', details);
   event.set('sortTime', sortTime);
-  var eventAcl = new Parse.ACL(Parse.User.current());
+  var eventAcl = new Parse.ACL(user);
   eventAcl.setPublicReadAccess(true);
   event.setACL(eventAcl);
 
