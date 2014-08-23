@@ -83,7 +83,7 @@ app.post('/events', function(req, res) {
   if (req.body.type == 'orgasm') {
     details = {
       'datetime': req.body.orgasmDatetime,
-      'notes': req.body.notes
+      'notes': req.body.orgasmNotes
     };
     sortTime = req.body.orgasmDatetime;
   }
@@ -92,6 +92,9 @@ app.post('/events', function(req, res) {
   }
   event.set('event', details);
   event.set('sortTime', sortTime);
+  var eventAcl = new Parse.ACL(Parse.User.current());
+  eventAcl.setPublicReadAccess(true);
+  event.setACL(eventAcl);
 
   event.save(null, {
     success: function(event) {
