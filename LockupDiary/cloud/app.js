@@ -77,20 +77,21 @@ app.post('/signup', function(req, res) {
 });
 
 app.post('/events', function(req, res) {
-  console.log(req.body);
-  var sortTime;
   var event = new Event();
+  var sortTime, details;
   event.set('type', req.body.type);
   if (req.body.type == 'orgasm') {
-    var orgasm = new Orgasm();
-    orgasm.set('datetime', req.body.orgasmDatetime);
-    sortTime = orgasm.get('datetime');
-    event.set('event', orgasm);
+    details = {
+      'datetime': req.body.orgasmDatetime,
+      'notes': req.body.notes
+    };
+    sortTime = req.body.orgasmDatetime;
   }
   else {
     throw new Error("Unrecognized type: " + type)
   }
-  event.set(sortTime, sortTime);
+  event.set('event', details);
+  event.set('sortTime', sortTime);
 
   event.save(null, {
     success: function(event) {
