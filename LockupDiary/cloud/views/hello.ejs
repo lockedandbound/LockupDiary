@@ -119,6 +119,12 @@
         Record orgasm
       </button>
       <a href="logout">Log out</a>
+      <h2>Recent events</h2>
+      <ul>
+        <% events.each(function(event) { %>
+          <li><%= JSON.stringify(event) %></li>
+        <% }) %>
+      </ul>
     </div>
 
   </body>

@@ -40,19 +40,33 @@ app.get('/hello', function(req, res) {
 
 app.get('/', function(req, res) {
   var currentUser = Parse.User.current();
-  if (currentUser) {
-    currentUser.fetch({
-      success: function(param) {
-        res.render('hello', {message: 'User ' + currentUser.getUsername() + ' is logged in.'})
-      },
-      error: function(error) {
-        console.error(error);
-        res.send(500, 'Error');
-      }
-    });
-  } else {
-     res.redirect('/login');
+  if (!currentUser) {
+    return res.redirect('/login');
   }
+
+  var eventQuery = new Parse.Query(Event);
+  eventQuery.equalTo('user', currentUser);
+  var eventCollection = eventQuery.collection();
+
+  eventCollection.fetch({
+    success: function(events) {
+      res.render('hello', {events: events, message: 'Events listed below'});
+    },
+    error: function(events, error) {
+      console.error(error);
+      res.send(500, 'Error');
+    }
+  });
+
+//   currentUser.fetch({
+//     success: function(param) {
+//       res.render('hello', {message: 'User ' + currentUser.getUsername() + ' is logged in.'})
+//     },
+//     error: function(error) {
+//       console.error(error);
+//       res.send(500, 'Error');
+//     }
+//   });
 });
 
 app.get('/signup', function(req, res) {
