@@ -1,0 +1,40 @@
+.discussion-item-icon {
+float: left;
+width: 32px;
+height: 32px;
+margin-top: -7px;
+margin-left: -40px;
+line-height: 28px;
+color: #666666;
+text-align: center;
+background-color: #f3f3f3;
+border: 2px solid #fff;
+border-radius: 50%;
+}
+
+.octicon {
+font: normal normal 16px octicons;
+line-height: 1;
+display: inline-block;
+text-decoration: none;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+
+.discussion-item-header {
+min-height: 30px;
+padding-top: 5px;
+padding-bottom: 5px;
+color: #777;
+}
+
+.discussion-item {
+position: relative;
+margin: 15px 0 15px 79px;
+padding-left: 25px;
+line-height: 20px;
+}
