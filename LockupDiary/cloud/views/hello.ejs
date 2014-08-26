@@ -121,22 +121,19 @@
       </button>
       <a href="logout">Log out</a>
       <h2>Recent events</h2>
-      <ul>
-        <% events.each(function(event) { %>
-          <li><%= JSON.stringify(event) %></li>
-        <% }) %>
-      </ul>
+      <% events.each(function(event) { %>
+         <% var ldEvent = JSON.parse(JSON.stringify(event.get("event"))); %>
+         <div class="discussion-item discussion-item-assigned">
+          <div class="discussion-item-header" id="event-145938144">
+            <span class="octicon octicon-person discussion-item-icon"></span>
+            <%= ldEvent.notes %>
+            <time class="timestamp">
+              <%= ldEvent.datetime %>
+            </time>
+          </div>
+        </div>
+      <% }) %>
     </div>
-    
-    <div class="discussion-item discussion-item-assigned">
-  <div class="discussion-item-header" id="event-145938144">
-
-    <span class="octicon octicon-person discussion-item-icon"></span>
-    <img alt="Person Person" class="avatar" data-user="123456" height="16" src="https://avatars2.githubusercontent.com/u/123456?v=2&s=32" width="16">
-    <a href="/asdf" class="author">asdf</a>
-    was assigned  by <a href="/asdf"><span class="discussion-item-entity">asdf</span></a> <a href="https://github.com/asdf" class="timestamp"><time class="timestamp" datetime="2014-07-26T11:31:34-07:00" is="relative-time" title="Jul 26, 2014 2:31 PM EDT">29 days ago</time></a>
-  </div>
-</div>
 
   </body>
 </html>
