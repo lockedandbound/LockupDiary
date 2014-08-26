@@ -46,6 +46,7 @@ app.get('/', function(req, res) {
 
   var eventQuery = new Parse.Query(Event);
   eventQuery.equalTo('user', currentUser);
+  eventQuery.descending('sortTime');
   var eventCollection = eventQuery.collection();
 
   eventCollection.fetch({
