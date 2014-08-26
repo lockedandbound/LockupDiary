@@ -118,14 +118,16 @@
         </div>
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/settings" target="_blank" title="Settings"><span class="octicon octicon-gear"></span></a></li>
-            <li><a href="/logout" target="_blank" title="Log out"><span class="octicon octicon-sign-out"></span></a></li>
+            <li><a href="/settings" title="Settings"><span class="octicon octicon-gear"></span></a></li>
+            <li><a href="/logout"it title="Log out"><span class="octicon octicon-sign-out"></span></a></li>
           </ul>
         </div>
       </div>
     </div>
 
     <div class="container">
+      <img style="float: left; margin-right: 15px; margin-bottom: 15px;" alt="lockedandbound" class="avatar" height="128" width="128" src="https://avatars0.githubusercontent.com/u/6627868?v=2&amp;s=460">
+      <h1 style="margin-top: 0px;">lockedandbound</h1>
       <p><%= message %></p>
       <button class="btn btn-primary" data-toggle="modal" data-target="#lockupModal">
         Start lockup
@@ -133,20 +135,21 @@
       <button class="btn btn-default" data-toggle="modal" data-target="#orgasmModal">
         Record orgasm
       </button>
-      <a href="logout">Log out</a>
-      <h2>Recent events</h2>
-      <% events.each(function(event) { %>
-         <% var ldEvent = JSON.parse(JSON.stringify(event.get("event"))); %>
-         <div class="discussion-item discussion-item-assigned">
-          <div class="discussion-item-header" id="event-145938144">
-            <span class="octicon octicon-person discussion-item-icon"></span>
-            <%= ldEvent.notes %>
-            <time class="timestamp">
-              <%= ldEvent.datetime %>
-            </time>
+      <div style="clear: both;">
+        <h2>Recent events</h2>
+        <% events.each(function(event) { %>
+           <% var ldEvent = JSON.parse(JSON.stringify(event.get("event"))); %>
+           <div class="discussion-item discussion-item-assigned">
+            <div class="discussion-item-header" id="event-145938144">
+              <span class="octicon octicon-person discussion-item-icon"></span>
+              <%= ldEvent.notes %>
+              <time class="timestamp">
+                <%= ldEvent.datetime %>
+              </time>
+            </div>
           </div>
-        </div>
-      <% }) %>
+        <% }) %>
+      </div>
     </div>
 
   </body>
