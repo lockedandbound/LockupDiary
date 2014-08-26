@@ -33,41 +33,24 @@ var Orgasm = Parse.Object.extend("Orgasm");
 var Lockup = Parse.Object.extend("Lockup");
 
 // Routes
-app.get('/hello', function(req, res) {
-  console.log('hello', 'hello', {key: 'value'});
-  res.render('hello', { message: 'Congrats, you just set up your app!' });
-});
-
 app.get('/', function(req, res) {
   var currentUser = Parse.User.current();
   if (!currentUser) {
     return res.redirect('/login');
   }
 
-  var eventQuery = new Parse.Query(Event);
-  eventQuery.equalTo('user', currentUser);
-  eventQuery.descending('sortTime');
-  var eventCollection = eventQuery.collection();
-
-  eventCollection.fetch({
-    success: function(events) {
-      res.render('hello', {events: events, message: 'Events listed below'});
-    },
-    error: function(events, error) {
-      console.error(error);
-      res.send(500, 'Error');
-    }
+  currentUser.fetch().then(function(user) {
+    var eventQuery = new Parse.Query(Event);
+    eventQuery.equalTo('user', currentUser);
+    eventQuery.descending('sortTime');
+    return eventQuery.collection().fetch();
+  }).then(function(events) {
+    res.render('hello', {events: events, user: currentUser.getUsername()});
+  }, function(error) {
+    console.error(error);
+    res.send(500, 'Error');
   });
 
-//   currentUser.fetch({
-//     success: function(param) {
-//       res.render('hello', {message: 'User ' + currentUser.getUsername() + ' is logged in.'})
-//     },
-//     error: function(error) {
-//       console.error(error);
-//       res.send(500, 'Error');
-//     }
-//   });
 });
 
 app.get('/signup', function(req, res) {
