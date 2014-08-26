@@ -5,12 +5,13 @@
     <link rel="stylesheet" href="/vendor/bootstrap-slate.min.css">
     <link rel="stylesheet" href="/vendor/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="/vendor/gh-history.css">
+    <link rel="stylesheet" href="/vendor/octicons/octicons.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="/vendor/moment.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="/vendor/bootstrap-datetimepicker.min.js"></script>
   </head>
-  <body>
+  <body style="padding-top: 60px;">
     <!-- Lockup Modal -->
     <div class="modal fade" id="lockupModal" tabindex="-1" role="dialog">
       <div class="modal-dialog">
@@ -110,8 +111,21 @@
       </div>
     </div>
 
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">Lockup Diary</a>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/settings" target="_blank" title="Settings"><span class="octicon octicon-gear"></span></a></li>
+            <li><a href="/logout" target="_blank" title="Log out"><span class="octicon octicon-sign-out"></span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
     <div class="container">
-      <h1>Lockup Diary</h1>
       <p><%= message %></p>
       <button class="btn btn-primary" data-toggle="modal" data-target="#lockupModal">
         Start lockup
