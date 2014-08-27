@@ -136,11 +136,12 @@
       </button>
       <div style="clear: both;">
         <h2>Recent events</h2>
+        <% var iconMap = {orgasm: 'rocket', lockup: 'lock'}; %>
         <% events.each(function(event) { %>
            <% var ldEvent = JSON.parse(JSON.stringify(event.get("event"))); %>
            <div class="discussion-item discussion-item-assigned">
             <div class="discussion-item-header" id="event-145938144">
-              <span class="octicon octicon-person discussion-item-icon"></span>
+              <span class="octicon octicon-<%= iconMap[event.get('type')] %> discussion-item-icon"></span>
               <%= ldEvent.notes %>
               <time class="timestamp">
                 <%= ldEvent.datetime %>
