@@ -13,23 +13,54 @@
   </head>
   <body style="padding-top: 60px;">
     <!-- Lockup Modal -->
-    <div class="modal fade" id="lockupModal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="startLockupModal" tabindex="-1" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">
-              <span aria-hidden="true">&times;</span>
-              <span class="sr-only">Close</span>
-            </button>
-            <h4 class="modal-title" id="myModalLabel">Start lockup</h4>
-          </div>
-          <div class="modal-body">
-            Placeholder
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Start lockup</button>
-          </div>
+          <form action="/events" id="lockupForm" method="POST" role="form">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+              </button>
+              <h4 class="modal-title" id="myModalLabel">Start lockup</h4>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="type" value="startLockup">
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <label style="margin-bottom: 0px;">Keyholder</label>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="keyholder" value="selfLocked" checked>
+                      Self-locked
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="keyholder" value="inPersonKeyholder">
+                      Locked by an in-person keyholder
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="keyholder" value="onlineKeyholder">
+                      Locked by an online keyholder
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <label for="orgasmNotes">Notes</label>
+                  <textarea id="orgasmNotes" name="orgasmNotes" class="form-control" rows="3"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Start lockup</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -128,7 +159,7 @@
     <div class="container">
       <img style="float: left; margin-right: 15px; margin-bottom: 15px;" alt="<%= user %>" class="avatar" height="128" width="128" src="https://avatars0.githubusercontent.com/u/6627868?v=2&amp;s=460">
       <h1 style="margin-top: 0px;"><%= user %></h1>
-      <button class="btn btn-primary" data-toggle="modal" data-target="#lockupModal">
+      <button class="btn btn-primary" data-toggle="modal" data-target="#startLockupModal">
         Start lockup
       </button>
       <button class="btn btn-default" data-toggle="modal" data-target="#orgasmModal">
