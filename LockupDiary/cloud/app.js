@@ -46,12 +46,14 @@ app.get('/', function(req, res) {
     eventQuery.descending('sortTime');
     return eventQuery.collection().fetch();
   }).then(function(events) {
-    res.render('hello', {events: events, user: currentUser.getUsername()});
+    var first = events.at(0);
+    var locked = first.get('type') == 'lockup' && !first.get('event').end_datetime;
+    var status = locked ? 'LOCKED' : 'UNLOCKED';
+    res.render('hello', {user: currentUser.getUsername(), events: events, status: status});
   }, function(error) {
     console.error(error);
     res.send(500, 'Error');
   });
-
 });
 
 app.get('/signup', function(req, res) {
