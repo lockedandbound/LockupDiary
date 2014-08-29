@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var moment = require('cloud/vendor/moment');
 
 // These two lines are required to initialize Express in Cloud Code.
 var express = require('express');
@@ -78,13 +79,24 @@ app.post('/events', function(req, res) {
   var user = Parse.User.current();
   var event = new Event();
   var sortTime, details;
-  event.set('type', req.body.type);
   if (req.body.type == 'orgasm') {
+    event.set('type', req.body.type);
     details = {
       'datetime': req.body.orgasmDatetime,
       'notes': req.body.orgasmNotes
     };
     sortTime = req.body.orgasmDatetime;
+  }
+  else if (req.body.type == 'startLockup') {
+    event.set('type', 'lockup');
+    var now = moment().toISOString();
+    details = {
+      'start_datetime': now,
+      'datetime': now,
+      'keyholder_status': req.body.keyholder,
+      'notes': req.body.lockupNotes
+    };
+    sortTime = now;
   }
   else {
     throw new Error("Unrecognized type: " + type)
