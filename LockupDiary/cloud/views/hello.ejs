@@ -192,9 +192,9 @@
       <div style="margin-bottom: 5px;">
         <label>Current status</label>: <%= status %>
       </div>
-      <% var lockupTarget = status == "LOCKED" ? "#endLockupModal" : "#startLockupModal" %>
+      <% var lockupTarget = locked ? "#endLockupModal" : "#startLockupModal" %>
       <button class="btn btn-primary" data-toggle="modal" data-target="<%= lockupTarget %>">
-        <%= status == "LOCKED" ? "End lockup" : "Start lockup" %>
+        <%= locked ? "End lockup" : "Start lockup" %>
       </button>
       <button class="btn btn-default" data-toggle="modal" data-target="#orgasmModal">
         Record orgasm

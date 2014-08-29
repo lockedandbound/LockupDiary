@@ -48,8 +48,26 @@ app.get('/', function(req, res) {
   }).then(function(events) {
     var first = events.at(0);
     var locked = first.get('type') == 'lockup' && !first.get('event').end_datetime;
-    var status = locked ? 'LOCKED' : 'UNLOCKED';
-    res.render('hello', {user: currentUser.getUsername(), events: events, status: status});
+    var status;
+    if (locked) {
+      status = 'LOCKED';
+      var lockupDuration = moment.duration(moment().diff(first.get('event').start_datetime));
+      var durationStr = '';
+      _.each(['years', 'months', 'weeks', 'days', 'hours', 'minutes'], function(unit) {
+        if (lockupDuration.get(unit) == 1) {
+          durationStr += '1 ' + unit.slice(0, unit.length - 1) + ', ';
+        }
+        else if (lockupDuration.get(unit) > 1) {
+          durationStr += lockupDuration.get(unit) + ' ' + unit + ', ';
+        }
+      });
+      status += ' for ' + durationStr.slice(0, durationStr.length - 2);
+    }
+    else {
+      status = 'UNLOCKED';
+    }
+
+    res.render('hello', {user: currentUser.getUsername(), events: events, locked: locked, status: status});
   }, function(error) {
     console.error(error);
     res.send(500, 'Error');
