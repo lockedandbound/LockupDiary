@@ -12,7 +12,7 @@
     <script src="/vendor/bootstrap-datetimepicker.min.js"></script>
   </head>
   <body style="padding-top: 60px;">
-    <!-- Lockup Modal -->
+    <!-- Start Lockup Modal -->
     <div class="modal fade" id="startLockupModal" tabindex="-1" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -65,6 +65,36 @@
       </div>
     </div>
     
+    <!-- End Lockup Modal -->
+    <div class="modal fade" id="endLockupModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="/events" id="lockupForm" method="POST" role="form">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+              </button>
+              <h4 class="modal-title" id="myModalLabel">End lockup</h4>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="type" value="endLockup">
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <label for="lockupNotes">Notes</label>
+                  <textarea id="lockupNotes" name="lockupNotes" class="form-control" rows="3"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">End lockup</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <!-- Orgasm Modal -->
     <div class="modal fade" id="orgasmModal" tabindex="-1" role="dialog">
       <div class="modal-dialog">
@@ -162,8 +192,9 @@
       <div style="margin-bottom: 5px;">
         <label>Current status</label>: <%= status %>
       </div>
-      <button class="btn btn-primary" data-toggle="modal" data-target="#startLockupModal">
-        Start lockup
+      <% var lockupTarget = status == "LOCKED" ? "#endLockupModal" : "#startLockupModal" %>
+      <button class="btn btn-primary" data-toggle="modal" data-target="<%= lockupTarget %>">
+        <%= status == "LOCKED" ? "End lockup" : "Start lockup" %>
       </button>
       <button class="btn btn-default" data-toggle="modal" data-target="#orgasmModal">
         Record orgasm
