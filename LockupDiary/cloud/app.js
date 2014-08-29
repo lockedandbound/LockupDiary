@@ -48,9 +48,11 @@ app.get('/', function(req, res) {
   }).then(function(events) {
     var first = events.at(0);
     var locked = first.get('type') == 'lockup' && !first.get('event').end_datetime;
+    var lockupId = null;
     var status;
     if (locked) {
       status = 'LOCKED';
+      lockupId = first.id;
       var lockupDuration = moment.duration(moment().diff(first.get('event').start_datetime));
       var durationStr = '';
       _.each(['years', 'months', 'weeks', 'days', 'hours', 'minutes'], function(unit) {
@@ -67,7 +69,13 @@ app.get('/', function(req, res) {
       status = 'UNLOCKED';
     }
 
-    res.render('hello', {user: currentUser.getUsername(), events: events, locked: locked, status: status});
+    res.render('hello', {
+      user: currentUser.getUsername(),
+      events: events,
+      locked: locked,
+      lockupId: lockupId,
+      status: status
+    });
   }, function(error) {
     console.error(error);
     res.send(500, 'Error');
@@ -97,51 +105,62 @@ app.post('/signup', function(req, res) {
 
 app.post('/events', function(req, res) {
   var user = Parse.User.current();
-  var event = new Event();
-  var sortTime, details;
-  if (req.body.type == 'orgasm') {
-    event.set('type', req.body.type);
-    details = {
-      'datetime': req.body.orgasmDatetime,
-      'notes': req.body.orgasmNotes
-    };
-    sortTime = req.body.orgasmDatetime;
-  }
-  else if (req.body.type == 'startLockup') {
-    event.set('type', 'lockup');
-    var now = moment().toISOString();
-    details = {
-      'start_datetime': now,
-      'datetime': now,
-      'keyholder_status': req.body.keyholder,
-      'notes': req.body.lockupNotes
-    };
-    sortTime = now;
+  if (req.body.type == 'endLockup') {
+    new Parse.Query(Event).get(req.body.lockupId).then(function(event) {
+      event.get('event').end_datetime = moment().toISOString();
+      return event.save();
+    }).then(function(event) {
+      console.log(event);
+      return res.redirect('/');
+    });
   }
   else {
-    throw new Error("Unrecognized type: " + type)
-  }
-  event.set('user', user);
-  event.set('event', details);
-  event.set('sortTime', sortTime);
-  var eventAcl = new Parse.ACL(user);
-  eventAcl.setPublicReadAccess(true);
-  event.setACL(eventAcl);
-
-  event.save(null, {
-    success: function(event) {
-      // Execute any logic that should take place after the object is saved.
-      console.log('New object created with objectId: ' + event.id);
-      console.log(event);
-    },
-    error: function(event, error) {
-      // Execute any logic that should take place if the save fails.
-      // error is a Parse.Error with an error code and description.
-      console.log('Failed to create new object, with error code: ' + error.message);
+    var event = new Event();
+    var sortTime, details;
+    if (req.body.type == 'orgasm') {
+      event.set('type', req.body.type);
+      details = {
+        'datetime': req.body.orgasmDatetime,
+        'notes': req.body.orgasmNotes
+      };
+      sortTime = req.body.orgasmDatetime;
     }
-  });
+    else if (req.body.type == 'startLockup') {
+      event.set('type', 'lockup');
+      var now = moment().toISOString();
+      details = {
+        'start_datetime': now,
+        'datetime': now,
+        'keyholder_status': req.body.keyholder,
+        'notes': req.body.lockupNotes
+      };
+      sortTime = now;
+    }
+    else {
+      throw new Error("Unrecognized type: " + type)
+    }
+    event.set('user', user);
+    event.set('event', details);
+    event.set('sortTime', sortTime);
+    var eventAcl = new Parse.ACL(user);
+    eventAcl.setPublicReadAccess(true);
+    event.setACL(eventAcl);
 
-  res.redirect('/');
+    event.save(null, {
+      success: function(event) {
+        // Execute any logic that should take place after the object is saved.
+        console.log('New object created with objectId: ' + event.id);
+        console.log(event);
+      },
+      error: function(event, error) {
+        // Execute any logic that should take place if the save fails.
+        // error is a Parse.Error with an error code and description.
+        console.log('Failed to create new object, with error code: ' + error.message);
+      }
+    });
+
+    res.redirect('/');
+  }
 })
 
 app.get('/login', function(req, res) {
