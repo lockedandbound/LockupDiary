@@ -63,6 +63,10 @@ app.get('/', function(req, res) {
           durationStr += lockupDuration.get(unit) + ' ' + unit + ', ';
         }
       });
+      if (durationStr === '') {
+        var secs = lockupDuration.get('seconds');
+        durationStr += secs + ' second' + (secs != 1 ? 's, ' : ', ');
+      }
       status += ' for ' + durationStr.slice(0, durationStr.length - 2);
     }
     else {
