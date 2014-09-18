@@ -134,7 +134,7 @@ app.post('/events', function(req, res) {
         'keyholder_status': req.body.keyholder,
         'notes': req.body.lockupNotes
       };
-      sortTime = now;
+      sortTime = 'Z';  // sort last
     }
     else {
       throw new Error("Unrecognized type: " + type)
