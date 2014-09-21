@@ -111,7 +111,9 @@ app.post('/events', function(req, res) {
   var user = Parse.User.current();
   if (req.body.type == 'endLockup') {
     new Parse.Query(Event).get(req.body.lockupId).then(function(event) {
-      event.get('event').end_datetime = moment().toISOString();
+      var endTime = moment().toISOString();
+      event.get('event').end_datetime = endTime;
+      event.set('sortTime', endTime);  // once lockup has ended, sort according to end time
       return event.save();
     }).then(function(event) {
       console.log(event);
@@ -138,7 +140,7 @@ app.post('/events', function(req, res) {
         'keyholder_status': req.body.keyholder,
         'notes': req.body.lockupNotes
       };
-      sortTime = 'Z';  // sort last
+      sortTime = 'Z';  // sort active lockup first
     }
     else {
       throw new Error("Unrecognized type: " + type)
