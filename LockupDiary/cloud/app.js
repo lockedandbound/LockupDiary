@@ -46,10 +46,12 @@ app.get('/', function(req, res) {
     eventQuery.descending('sortTime');
     return eventQuery.collection().fetch();
   }).then(function(events) {
-    var first = events.at(0);
-    var locked = first.get('type') == 'lockup' && !first.get('event').end_datetime;
-    var lockupId = null;
-    var status;
+    var locked = false;
+    var status, lockupId, first;
+    if (events.length > 0) {
+      var first = events.at(0);
+      locked = first.get('type') == 'lockup' && !first.get('event').end_datetime;
+    }
     if (locked) {
       status = 'LOCKED';
       lockupId = first.id;
