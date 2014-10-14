@@ -189,33 +189,40 @@
     </div>
 
     <div class="container">
-      <img style="float: left; margin-right: 15px; margin-bottom: 15px;" alt="<%= user %>" class="avatar" height="128" width="128" src="https://avatars0.githubusercontent.com/u/6627868?v=2&amp;s=460">
-      <h1 style="margin-top: 0px;"><%= user %></h1>
-      <div style="margin-bottom: 5px;">
-        <label>Current status</label>: <%= status %>
+      <div id="user-header">
+        <img style="float: left; margin-right: 15px;" alt="<%= user %>" class="avatar" height="128" width="128" src="https://avatars0.githubusercontent.com/u/6627868?v=2&amp;s=460">
+        <h1 style="margin-top: 0px;"><%= user %></h1>
+        <div style="margin-bottom: 5px;">
+          <label>Current status</label>: <%= status %>
+        </div>
+        <% var lockupTarget = locked ? "#endLockupModal" : "#startLockupModal" %>
+        <button class="btn btn-primary" data-toggle="modal" data-target="<%= lockupTarget %>">
+          <%= locked ? "End lockup" : "Start lockup" %>
+        </button>
+        <button class="btn btn-default" data-toggle="modal" data-target="#orgasmModal">
+          Record orgasm
+        </button>
       </div>
-      <% var lockupTarget = locked ? "#endLockupModal" : "#startLockupModal" %>
-      <button class="btn btn-primary" data-toggle="modal" data-target="<%= lockupTarget %>">
-        <%= locked ? "End lockup" : "Start lockup" %>
-      </button>
-      <button class="btn btn-default" data-toggle="modal" data-target="#orgasmModal">
-        Record orgasm
-      </button>
-      <div style="clear: both;">
-        <h2>Recent events</h2>
-        <% var iconMap = {orgasm: 'rocket', lockup: 'lock'}; %>
-        <% events.each(function(event) { %>
-           <% var ldEvent = JSON.parse(JSON.stringify(event.get("event"))); %>
-           <div class="discussion-item discussion-item-assigned">
-            <div class="discussion-item-header" id="event-145938144">
-              <span class="octicon octicon-<%= iconMap[event.get('type')] %> discussion-item-icon"></span>
-              <%= ldEvent.notes %>
-              <time class="timestamp">
-                <%= ldEvent.datetime %>
-              </time>
+      <div style="clear: both;" class="row">
+        <div id="events" class="col-md-9">
+          <h2>Recent events</h2>
+          <% var iconMap = {orgasm: 'rocket', lockup: 'lock'}; %>
+          <% events.each(function(event) { %>
+             <% var ldEvent = JSON.parse(JSON.stringify(event.get("event"))); %>
+             <div class="discussion-item discussion-item-assigned">
+              <div class="discussion-item-header" id="event-145938144">
+                <span class="octicon octicon-<%= iconMap[event.get('type')] %> discussion-item-icon"></span>
+                <%= ldEvent.notes %>
+                <time class="timestamp">
+                  <%= ldEvent.datetime %>
+                </time>
+              </div>
             </div>
-          </div>
-        <% }) %>
+          <% }) %>
+        </div>
+        <div id="stats" class="visible-md visible-lg col-md-3">
+          <h2>Statistics</h2>
+        </div>
       </div>
     </div>
 
