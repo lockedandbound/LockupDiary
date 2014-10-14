@@ -50,7 +50,7 @@ var calculatePercentageLocked = function(intervalStart, intervalEnd, events) {
       }
     }
   });
-  return Math.round(msLocked / intervalEnd.diff(intervalStart) * 100).toString();
+  return (msLocked / intervalEnd.diff(intervalStart) * 100).toFixed(1);
 };
 
 var calculateOrgasmCount = function(intervalStart, intervalEnd, events) {
