@@ -33,6 +33,26 @@ var Event = Parse.Object.extend("Event");
 var Orgasm = Parse.Object.extend("Orgasm");
 var Lockup = Parse.Object.extend("Lockup");
 
+var calculatePercentageLocked = function(intervalStart, intervalEnd, events) {
+  var msLocked = 0;
+  events.each(function(event) {
+    if (event.get('type') == 'lockup') {
+      var start = moment(event.get('event').start_datetime);
+      var end = event.get('event').end_datetime ? moment(event.get('event').end_datetime) : null;
+      if ((!end || end > intervalStart) || (start < intervalEnd && start > intervalStart)) {
+        if (start < intervalStart) {
+          start = intervalStart;
+        }
+        if (!end) {
+          end = intervalEnd;
+        }
+        msLocked += end.diff(start);
+      }
+    }
+  });
+  return Math.round(msLocked / intervalEnd.diff(intervalStart) * 100).toString();
+};
+
 // Routes
 app.get('/', function(req, res) {
   var currentUser = Parse.User.current();
@@ -49,7 +69,7 @@ app.get('/', function(req, res) {
     var locked = false;
     var status, lockupId, first;
     if (events.length > 0) {
-      var first = events.at(0);
+      first = events.at(0);
       locked = first.get('type') == 'lockup' && !first.get('event').end_datetime;
     }
     if (locked) {
@@ -74,13 +94,19 @@ app.get('/', function(req, res) {
     else {
       status = 'UNLOCKED';
     }
+    
+    var end = moment();
+    var start = moment(end).subtract(30, 'days');
+    var percentLocked = calculatePercentageLocked(start, end, events);
+    percentLocked += "%";
 
     res.render('hello', {
       user: currentUser.getUsername(),
       events: events,
       locked: locked,
       lockupId: lockupId,
-      status: status
+      status: status,
+      percentLocked: percentLocked
     });
   }, function(error) {
     console.error(error);
