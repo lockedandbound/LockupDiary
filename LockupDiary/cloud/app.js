@@ -53,6 +53,19 @@ var calculatePercentageLocked = function(intervalStart, intervalEnd, events) {
   return Math.round(msLocked / intervalEnd.diff(intervalStart) * 100).toString();
 };
 
+var calculateOrgasmCount = function(intervalStart, intervalEnd, events) {
+  var orgasms = 0;
+  events.each(function(event) {
+    if (event.get('type') == 'orgasm') {
+      var datetime = moment(event.get('event').datetime);
+      if (intervalStart <= datetime && datetime <= intervalEnd) {
+        orgasms += 1;
+      }
+    }
+  });
+  return orgasms.toString();
+};
+
 // Routes
 app.get('/', function(req, res) {
   var currentUser = Parse.User.current();
@@ -99,6 +112,8 @@ app.get('/', function(req, res) {
     var start = moment(end).subtract(30, 'days');
     var percentLocked = calculatePercentageLocked(start, end, events);
     percentLocked += "%";
+    
+    var orgasmCount = calculateOrgasmCount(start, end, events);
 
     res.render('hello', {
       user: currentUser.getUsername(),
@@ -106,7 +121,8 @@ app.get('/', function(req, res) {
       locked: locked,
       lockupId: lockupId,
       status: status,
-      percentLocked: percentLocked
+      percentLocked: percentLocked,
+      orgasmCount: orgasmCount
     });
   }, function(error) {
     console.error(error);
