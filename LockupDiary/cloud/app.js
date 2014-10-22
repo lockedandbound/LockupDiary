@@ -66,6 +66,25 @@ var calculateOrgasmCount = function(intervalStart, intervalEnd, events) {
   return orgasms.toString();
 };
 
+var getDurationString = function(lockupEvent) {
+  var end = lockupEvent.get('event').end_datetime || moment();
+  var lockupDuration = moment.duration(end.diff(lockupEvent.get('event').start_datetime));
+  var durationStr = '';
+  _.each(['years', 'months', 'weeks', 'days', 'hours', 'minutes'], function(unit) {
+    if (lockupDuration.get(unit) == 1) {
+      durationStr += '1 ' + unit.slice(0, unit.length - 1) + ', ';
+    }
+    else if (lockupDuration.get(unit) > 1) {
+      durationStr += lockupDuration.get(unit) + ' ' + unit + ', ';
+    }
+  });
+  if (durationStr === '') {
+    var secs = lockupDuration.get('seconds');
+    durationStr += secs + ' second' + (secs != 1 ? 's, ' : ', ');
+  }
+  return durationStr.slice(0, durationStr.length - 2);
+};
+
 // Routes
 app.get('/', function(req, res) {
   var currentUser = Parse.User.current();
@@ -86,23 +105,8 @@ app.get('/', function(req, res) {
       locked = first.get('type') == 'lockup' && !first.get('event').end_datetime;
     }
     if (locked) {
-      status = 'LOCKED';
+      status = 'LOCKED for ' + getDurationString(first);
       lockupId = first.id;
-      var lockupDuration = moment.duration(moment().diff(first.get('event').start_datetime));
-      var durationStr = '';
-      _.each(['years', 'months', 'weeks', 'days', 'hours', 'minutes'], function(unit) {
-        if (lockupDuration.get(unit) == 1) {
-          durationStr += '1 ' + unit.slice(0, unit.length - 1) + ', ';
-        }
-        else if (lockupDuration.get(unit) > 1) {
-          durationStr += lockupDuration.get(unit) + ' ' + unit + ', ';
-        }
-      });
-      if (durationStr === '') {
-        var secs = lockupDuration.get('seconds');
-        durationStr += secs + ' second' + (secs != 1 ? 's, ' : ', ');
-      }
-      status += ' for ' + durationStr.slice(0, durationStr.length - 2);
     }
     else {
       status = 'UNLOCKED';
