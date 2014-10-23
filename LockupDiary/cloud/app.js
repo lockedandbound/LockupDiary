@@ -67,7 +67,7 @@ var calculateOrgasmCount = function(intervalStart, intervalEnd, events) {
 };
 
 var getDurationString = function(lockupEvent) {
-  var end = lockupEvent.get('event').end_datetime || moment();
+  var end = moment(lockupEvent.get('event').end_datetime) || moment();
   var lockupDuration = moment.duration(end.diff(lockupEvent.get('event').start_datetime));
   var durationStr = '';
   _.each(['years', 'months', 'weeks', 'days', 'hours', 'minutes'], function(unit) {
@@ -159,6 +159,7 @@ app.post('/events', function(req, res) {
     new Parse.Query(Event).get(req.body.lockupId).then(function(event) {
       var endTime = moment().toISOString();
       event.get('event').end_datetime = endTime;
+      event.get('event').duration = getDurationString(event);
       event.set('sortTime', endTime);  // once lockup has ended, sort according to end time
       return event.save();
     }).then(function(event) {
