@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/vendor/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="/vendor/gh-history.css">
     <link rel="stylesheet" href="/vendor/octicons/octicons.css">
+    <link rel="stylesheet" href="/style.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="/vendor/moment.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -228,11 +229,11 @@
           <% }) %>
         </div>
         <div id="stats" class="visible-md visible-lg col-md-3">
-          <h2>Statistics</h2>
-          <h4>Percentage of time locked in last 30 days</h4>
-          <%= percentLocked %>
-          <h4>Number of orgasms in last 30 days</h4>
-          <%= orgasmCount %>
+          <h2>Last 30 days</h2>
+          <div class="statistic"><%= percentLocked %></div>
+          <div class="statistic-title">Percentage of time locked</div>
+          <div class="statistic"><%= orgasmCount %></div>
+          <div class="statistic-title">Number of orgasms</div>
         </div>
       </div>
     </div>

@@ -50,7 +50,7 @@ var calculatePercentageLocked = function(intervalStart, intervalEnd, events) {
       }
     }
   });
-  return (msLocked / intervalEnd.diff(intervalStart) * 100).toFixed(1);
+  return (msLocked / intervalEnd.diff(intervalStart) * 100).toFixed(1)+"%";
 };
 
 var calculateOrgasmCount = function(intervalStart, intervalEnd, events) {
@@ -115,8 +115,6 @@ app.get('/', function(req, res) {
     var end = moment();
     var start = moment(end).subtract(30, 'days');
     var percentLocked = calculatePercentageLocked(start, end, events);
-    percentLocked += "%";
-    
     var orgasmCount = calculateOrgasmCount(start, end, events);
 
     res.render('hello', {
