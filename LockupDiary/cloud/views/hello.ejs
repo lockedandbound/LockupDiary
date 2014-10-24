@@ -216,7 +216,7 @@
                 <span class="octicon octicon-<%= iconMap[event.get('type')] %> discussion-item-icon"></span>
                 <div>
                   <% if (event.get('type') == 'lockup') { %>
-                    <%= user + ' was ' + textMap[ldEvent.keyholder_status] + ' for ' + ldEvent.duration %><br>
+                    <%= user + ' was ' %><span class="event"><%=textMap[ldEvent.keyholder_status]%></span><%=' for ' + ldEvent.duration %><br>
                   <ul class="lockup-list">
                     <% if (ldEvent.end_datetime) { %>
                       <li>Lockup end: <time class="timestamp"><%= ldEvent.end_datetime %></time><br>
@@ -229,7 +229,7 @@
                   </ul>
                   <% } %>
                   <% if (event.get('type') == 'orgasm') { %>
-                    <%= user + ' recorded an orgasm. ' %>
+                    <%= user + ' recorded an ' %><span class="event">orgasm</span>.
                     <time class="timestamp"><%= ldEvent.datetime %></time><br/>
                   <%= ldEvent.notes %>
                   <% } %>

@@ -11,3 +11,8 @@
 .lockup-list {
   -webkit-padding-start: 25px;
 }
+
+.event {
+  font-size: 14pt;
+  font-weight: bold;
+}
