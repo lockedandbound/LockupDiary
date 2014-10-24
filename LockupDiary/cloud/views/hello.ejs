@@ -219,9 +219,12 @@
                     <%= user + ' was ' + textMap[ldEvent.keyholder_status] + ' for ' + ldEvent.duration %><br>
                   <ul class="lockup-list">
                     <% if (ldEvent.end_datetime) { %>
-                      <li>Lockup end: <time class="timestamp"><%= ldEvent.end_datetime %></time></li>
+                      <li>Lockup end: <time class="timestamp"><%= ldEvent.end_datetime %></time><br>
+                      <% if (ldEvent.end_notes) { %>
+                        &#8627; <%= ldEvent.end_notes %></li>
+                      <% } %>
                     <% } %>
-                    <li>Lockup start: <time class="timestamp"><%= ldEvent.start_datetime %></time><br/><%= ldEvent.notes %>
+                    <li>Lockup start: <time class="timestamp"><%= ldEvent.start_datetime %></time><br/>&#8627; <%= ldEvent.start_notes %>
                     </li>
                   </ul>
                   <% } %>

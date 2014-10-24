@@ -160,6 +160,7 @@ app.post('/events', function(req, res) {
       var endTime = moment().toISOString();
       event.get('event').end_datetime = endTime;
       event.get('event').duration = getDurationString(event);
+      event.get('event').end_notes = req.body.lockupNotes;
       event.set('sortTime', endTime);  // once lockup has ended, sort according to end time
       return event.save();
     }).then(function(event) {
@@ -185,7 +186,7 @@ app.post('/events', function(req, res) {
         'start_datetime': now,
         'datetime': now,
         'keyholder_status': req.body.keyholder,
-        'notes': req.body.lockupNotes
+        'start_notes': req.body.lockupNotes
       };
       sortTime = 'Z';  // sort active lockup first
     }
