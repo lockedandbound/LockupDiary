@@ -8,6 +8,6 @@
   padding-bottom: 10px;
 }
 
-.lockup-table {
-  background-color: inherit;
+.lockup-list {
+  -webkit-padding-start: 25px;
 }

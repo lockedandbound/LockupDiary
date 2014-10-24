@@ -217,13 +217,13 @@
                 <div>
                   <% if (event.get('type') == 'lockup') { %>
                     <%= user + ' was ' + textMap[ldEvent.keyholder_status] + ' for ' + ldEvent.duration %><br>
-                    <table class="lockup-table">
-                      <% if (ldEvent.end_datetime) { %>
-                      <tr><td>Lockup end:&nbsp;&nbsp;</td><td><time class="timestamp"><%= ldEvent.end_datetime %></time></td></tr>
-                      <% } %>
-                      <tr><td>Lockup start:&nbsp;&nbsp;</td><td><time class="timestamp"><%= ldEvent.start_datetime %></time></td></tr>
-                      <tr><td></td><td><%= ldEvent.notes %></td></tr>
-                    </table>
+                  <ul class="lockup-list">
+                    <% if (ldEvent.end_datetime) { %>
+                      <li>Lockup end: <time class="timestamp"><%= ldEvent.end_datetime %></time></li>
+                    <% } %>
+                    <li>Lockup start: <time class="timestamp"><%= ldEvent.start_datetime %></time><br/><%= ldEvent.notes %>
+                    </li>
+                  </ul>
                   <% } %>
                   <% if (event.get('type') == 'orgasm') { %>
                     <%= user + ' recorded an orgasm. ' %>
