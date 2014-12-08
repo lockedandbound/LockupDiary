@@ -70,12 +70,19 @@ var getDurationString = function(lockupEvent) {
   var end = moment(lockupEvent.get('event').end_datetime) || moment();
   var lockupDuration = moment.duration(end.diff(lockupEvent.get('event').start_datetime));
   var durationStr = '';
+  var weeks = 0;
   _.each(['years', 'months', 'weeks', 'days', 'hours', 'minutes'], function(unit) {
-    if (lockupDuration.get(unit) == 1) {
-      durationStr += '1 ' + unit.slice(0, unit.length - 1) + ', ';
+    var num = lockupDuration.get(unit);
+    if (unit == 'weeks') {
+      num = Math.floor(lockupDuration.get('days') / 7);
+      weeks = num;
     }
-    else if (lockupDuration.get(unit) > 1) {
-      durationStr += lockupDuration.get(unit) + ' ' + unit + ', ';
+    if (unit === 'days' && weeks > 0) {
+      num -= 7*weeks;
+    }
+    if (num > 0) {
+      var unitStr = num == 1 ? unit.slice(0, unit.length - 1) : unit;
+      durationStr += num + ' ' + unitStr + ', ';
     }
   });
   if (durationStr === '') {
