@@ -98,13 +98,16 @@ app.get('/', function(req, res) {
   if (!currentUser) {
     return res.redirect('/login');
   }
+  currentUser.fetch().then(function() {
+    renderProfile(currentUser, res);
+  });
+});
 
-  currentUser.fetch().then(function(user) {
-    var eventQuery = new Parse.Query(Event);
-    eventQuery.equalTo('user', currentUser);
-    eventQuery.descending('sortTime');
-    return eventQuery.collection().fetch();
-  }).then(function(events) {
+var renderProfile = function(user, res) {
+  var eventQuery = new Parse.Query(Event);
+  eventQuery.equalTo('user', user);
+  eventQuery.descending('sortTime');
+  eventQuery.collection().fetch().then(function(events) {
     var locked = false;
     var status, lockupId, first;
     if (events.length > 0) {
@@ -125,7 +128,7 @@ app.get('/', function(req, res) {
     var orgasmCount = calculateOrgasmCount(start, end, events);
 
     res.render('hello', {
-      user: currentUser.getUsername(),
+      user: user.getUsername(),
       events: events,
       locked: locked,
       lockupId: lockupId,
@@ -136,6 +139,23 @@ app.get('/', function(req, res) {
   }, function(error) {
     console.error(error);
     res.send(500, 'Error');
+  });
+};
+
+app.get('/user/:user', function(req, res) {
+  var userQuery = new Parse.Query(Parse.User);
+  userQuery.equalTo("username", req.params.user);
+  userQuery.first({
+    success: function(user) {
+      if (!user) {
+        return res.send(200, 'No such user');  //TODO: update to 404 once have 404 page
+      }
+      renderProfile(user, res);
+    },
+    failure: function(error) {
+      console.error('Looking up user:', error);
+      res.send(500, 'ERROR: ' + error.message);
+    }
   });
 });
 
