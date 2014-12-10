@@ -180,7 +180,7 @@
         <div class="navbar-header">
           <a href="/" class="navbar-brand">Lockup Diary</a>
         </div>
-        <% if (authenticated) { %>
+        <% if (currentUser) { %>
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="/settings" title="Settings"><span class="octicon octicon-gear"></span></a></li>
@@ -194,11 +194,11 @@
     <div class="container">
       <div id="user-header">
         <img style="float: left; margin-right: 15px;" alt="<%= user %>" class="avatar" height="128" width="128" src="https://avatars0.githubusercontent.com/u/6627868?v=2&amp;s=460">
-        <h1 style="margin-top: 0px;"><%= user %></h1>
+        <h1 style="margin-top: 0px;"><%= user.getUsername() %></h1>
         <div style="margin-bottom: 5px;">
           <label>Current status</label>: <%= status %>
         </div>
-        <% if (authenticated) { %>
+        <% if (currentUser && currentUser.id === user.id) { %>
         <% var lockupTarget = locked ? "#endLockupModal" : "#startLockupModal" %>
         <button class="btn btn-primary" data-toggle="modal" data-target="<%= lockupTarget %>">
           <%= locked ? "End lockup" : "Start lockup" %>
@@ -220,7 +220,7 @@
                 <span class="octicon octicon-<%= iconMap[event.get('type')] %> discussion-item-icon"></span>
                 <div>
                   <% if (event.get('type') == 'lockup') { %>
-                    <%= user + ' was ' %><span class="event"><%=textMap[ldEvent.keyholder_status]%></span><%=' for ' + ldEvent.duration %><br>
+                    <%= user.getUsername() + ' was ' %><span class="event"><%=textMap[ldEvent.keyholder_status]%></span><%=' for ' + ldEvent.duration %><br>
                   <ul class="lockup-list">
                     <% if (ldEvent.end_datetime) { %>
                       <li>Lockup end: <time class="timestamp"><%= ldEvent.end_datetime %></time><br>
@@ -233,7 +233,7 @@
                   </ul>
                   <% } %>
                   <% if (event.get('type') == 'orgasm') { %>
-                    <%= user + ' recorded an ' %><span class="event">orgasm</span>.
+                    <%= user.getUsername() + ' recorded an ' %><span class="event">orgasm</span>.
                     <time class="timestamp"><%= ldEvent.datetime %></time><br/>
                   <%= ldEvent.notes %>
                   <% } %>

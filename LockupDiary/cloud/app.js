@@ -99,11 +99,11 @@ app.get('/', function(req, res) {
     return res.redirect('/login');
   }
   currentUser.fetch().then(function() {
-    renderProfile(currentUser, res, true);
+    renderProfile(currentUser, res);
   });
 });
 
-var renderProfile = function(user, res, authenticated) {
+var renderProfile = function(user, res) {
   var eventQuery = new Parse.Query(Event);
   eventQuery.equalTo('user', user);
   eventQuery.descending('sortTime');
@@ -126,10 +126,10 @@ var renderProfile = function(user, res, authenticated) {
     var start = moment(end).subtract(30, 'days');
     var percentLocked = calculatePercentageLocked(start, end, events);
     var orgasmCount = calculateOrgasmCount(start, end, events);
-
+    
     res.render('hello', {
-      user: user.getUsername(),
-      authenticated: authenticated,
+      user: user,
+      currentUser: Parse.User.current(),
       events: events,
       locked: locked,
       lockupId: lockupId,
@@ -151,7 +151,7 @@ app.get('/user/:user', function(req, res) {
       if (!user) {
         return res.send(200, 'No such user');  //TODO: update to 404 once have 404 page
       }
-      renderProfile(user, res, false);
+      renderProfile(user, res);
     },
     failure: function(error) {
       console.error('Looking up user:', error);
@@ -193,7 +193,7 @@ app.post('/events', function(req, res) {
       return event.save();
     }).then(function(event) {
       console.log(event);
-      return res.redirect('/');
+      return res.redirect('back');
     });
   }
   else {
