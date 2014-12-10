@@ -180,12 +180,14 @@
         <div class="navbar-header">
           <a href="/" class="navbar-brand">Lockup Diary</a>
         </div>
+        <% if (authenticated) { %>
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="/settings" title="Settings"><span class="octicon octicon-gear"></span></a></li>
             <li><a href="/logout"it title="Log out"><span class="octicon octicon-sign-out"></span></a></li>
           </ul>
         </div>
+        <% } %>
       </div>
     </div>
 
@@ -196,6 +198,7 @@
         <div style="margin-bottom: 5px;">
           <label>Current status</label>: <%= status %>
         </div>
+        <% if (authenticated) { %>
         <% var lockupTarget = locked ? "#endLockupModal" : "#startLockupModal" %>
         <button class="btn btn-primary" data-toggle="modal" data-target="<%= lockupTarget %>">
           <%= locked ? "End lockup" : "Start lockup" %>
@@ -203,6 +206,7 @@
         <button class="btn btn-default" data-toggle="modal" data-target="#orgasmModal">
           Record orgasm
         </button>
+        <% } %>
       </div>
       <div style="clear: both;" class="row">
         <div id="events" class="col-md-9">

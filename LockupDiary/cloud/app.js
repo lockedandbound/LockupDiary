@@ -99,11 +99,11 @@ app.get('/', function(req, res) {
     return res.redirect('/login');
   }
   currentUser.fetch().then(function() {
-    renderProfile(currentUser, res);
+    renderProfile(currentUser, res, true);
   });
 });
 
-var renderProfile = function(user, res) {
+var renderProfile = function(user, res, authenticated) {
   var eventQuery = new Parse.Query(Event);
   eventQuery.equalTo('user', user);
   eventQuery.descending('sortTime');
@@ -129,6 +129,7 @@ var renderProfile = function(user, res) {
 
     res.render('hello', {
       user: user.getUsername(),
+      authenticated: authenticated,
       events: events,
       locked: locked,
       lockupId: lockupId,
@@ -150,7 +151,7 @@ app.get('/user/:user', function(req, res) {
       if (!user) {
         return res.send(200, 'No such user');  //TODO: update to 404 once have 404 page
       }
-      renderProfile(user, res);
+      renderProfile(user, res, false);
     },
     failure: function(error) {
       console.error('Looking up user:', error);
