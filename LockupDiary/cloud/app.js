@@ -107,8 +107,14 @@ app.get('/', function(req, res) {
 });
 
 var renderProfile = function(user, res) {
+  var end = moment();
+  var start = moment(end).subtract(30, 'days');
+  var startDay = moment(start).startOf('day');
+
   var eventQuery = new Parse.Query(Event);
   eventQuery.equalTo('user', user);
+  eventQuery.lessThanOrEqualTo('sortTime', end.toISOString());
+  eventQuery.greaterThanOrEqualTo('sortTime', startDay.toISOString());
   eventQuery.descending('sortTime');
   eventQuery.collection().fetch().then(function(events) {
     var locked = false;
@@ -125,8 +131,7 @@ var renderProfile = function(user, res) {
       status = 'UNLOCKED';
     }
     
-    var end = moment();
-    var start = moment(end).subtract(30, 'days');
+    
     var percentLocked = calculatePercentageLocked(start, end, events);
     var orgasmCount = calculateOrgasmCount(start, end, events);
     
