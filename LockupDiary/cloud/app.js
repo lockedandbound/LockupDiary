@@ -111,10 +111,16 @@ var renderProfile = function(user, res) {
   var start = moment(end).subtract(30, 'days');
   var startDay = moment(start).startOf('day');
 
-  var eventQuery = new Parse.Query(Event);
-  eventQuery.equalTo('user', user);
-  eventQuery.lessThanOrEqualTo('sortTime', end.toISOString());
-  eventQuery.greaterThanOrEqualTo('sortTime', startDay.toISOString());
+  var activeQuery = new Parse.Query(Event);
+  activeQuery.equalTo('user', user);
+  activeQuery.equalTo('sortTime', 'Z');
+  
+  var recentQuery = new Parse.Query(Event);
+  recentQuery.equalTo('user', user);
+  recentQuery.lessThanOrEqualTo('sortTime', end.toISOString());
+  recentQuery.greaterThanOrEqualTo('sortTime', startDay.toISOString());
+  
+  var eventQuery = Parse.Query.or(activeQuery, recentQuery);
   eventQuery.descending('sortTime');
   eventQuery.collection().fetch().then(function(events) {
     var locked = false;
