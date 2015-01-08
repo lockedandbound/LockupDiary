@@ -16,3 +16,15 @@
   font-size: 14pt;
   font-weight: bold;
 }
+
+#full-diary-link {
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+}
+
+.inline-nav-link {
+  font-size: 14px;
+  font-weight: 500;
+  padding-top: 10px;
+}
