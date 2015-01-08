@@ -184,6 +184,7 @@
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="/diary" title="Full Diary"><span class="octicon octicon-calendar"></span></a></li>
+            <li><a href="/statistics" title="Statistics"><span class="octicon octicon-pulse"></span></a></li>
             <li><a href="/settings" title="Settings"><span class="octicon octicon-gear"></span></a></li>
             <li><a href="/logout"it title="Log out"><span class="octicon octicon-sign-out"></span></a></li>
           </ul>
@@ -211,7 +212,9 @@
       </div>
       <div style="clear:both; margin-top:20px;" class="row col-md-12">
         <h2 style="display:inline;">Last 30 days</h2>
-        <span id="full-diary-link" class="inline-nav-link"><a href="">&rarr; View full diary</a></span>
+        <span id="full-diary-link" class="inline-nav-link">
+          <a href="/user/<%= user.getUsername()%>/diary">&rarr; View full diary</a>
+        </span>
       <hr>
       </div>
       
@@ -221,7 +224,9 @@
           <div class="statistic-title">Percentage of time locked</div>
           <div class="statistic"><%= orgasmCount %></div>
           <div class="statistic-title">Number of orgasms</div>
-          <div class="inline-nav-link"><a href="">&rarr; More statistics</a></div>
+          <div class="inline-nav-link">
+            <a href="/user/<%= user.getUsername()%>/statistics">&rarr; More statistics</a>
+          </div>
         </div>
         <div id="events" class="col-md-9">
           <% var iconMap = {orgasm: 'rocket', lockup: 'lock'}; %>
