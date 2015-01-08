@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lockup Diary</title>
+    <link rel="stylesheet" href="/vendor/bootstrap-slate.min.css">
+    <link rel="stylesheet" href="/vendor/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="/vendor/gh-history.css">
+    <link rel="stylesheet" href="/vendor/octicons/octicons.css">
+    <link rel="stylesheet" href="/style.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="/vendor/moment.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="/vendor/bootstrap-datetimepicker.min.js"></script>
+    <script src="/hello.js"></script>
+  </head>
+  <body style="padding-top: 60px;">
+
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">Lockup Diary</a>
+        </div>
+        <% if (currentUser) { %>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/diary" title="Full Diary"><span class="octicon octicon-calendar"></span></a></li>
+            <li><a href="/statistics" title="Statistics"><span class="octicon octicon-pulse"></span></a></li>
+            <li><a href="/settings" title="Settings"><span class="octicon octicon-gear"></span></a></li>
+            <li><a href="/logout"it title="Log out"><span class="octicon octicon-sign-out"></span></a></li>
+          </ul>
+        </div>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="container">
+      <div id="user-header">
+        <h1 style="margin-top: 0px;"><%= user.getUsername() %>'s Diary</h1>
+      </div>
+      <div style="clear:both; margin-top:20px;" class="row col-md-12">
+        <h2 style="display:inline;"><%= year %></h2>
+      <hr>
+      </div>
+      
+    </div>
+  </body>
+</html>

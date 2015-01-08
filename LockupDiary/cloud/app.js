@@ -17,6 +17,7 @@ app.use(parseExpressCookieSession({ cookie: { maxAge: 3600000 } }));
 
 // Additional routes files
 require('cloud/accounts')(app);
+require('cloud/profile')(app);
 
 var logConstructor = function(builtInLogger) {
   return function() {
