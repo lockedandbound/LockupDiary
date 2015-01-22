@@ -1,7 +1,10 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
     <title>Lockup Diary</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/vendor/bootstrap-slate.min.css">
     <link rel="stylesheet" href="/vendor/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="/vendor/gh-history.css">
@@ -13,7 +16,9 @@
     <script src="/vendor/bootstrap-datetimepicker.min.js"></script>
     <script src="/hello.js"></script>
   </head>
-  <body style="padding-top: 60px;">
+
+  <body style="padding-top:60px;">
+
     <!-- Start Lockup Modal -->
     <div class="modal fade" id="startLockupModal" tabindex="-1" role="dialog">
       <div class="modal-dialog">
@@ -185,22 +190,20 @@
             <span class="icon-bar"></span>
           </button>
         </div>
-        <% if (currentUser) { %>
         <div class="navbar-collapse collapse" id="navbar-main">
+          <% if (currentUser) { %>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="/diary"><span class="octicon octicon-calendar"></span> Diary</a></li>
             <li><a href="/statistics"><span class="octicon octicon-pulse"></span> Statistics</a></li>
             <li><a href="/settings"><span class="octicon octicon-gear"></span> Settings</a></li>
             <li><a href="/logout"><span class="octicon octicon-sign-out"></span> Sign out</a></li>
           </ul>
-        </div>
-        <% } else { %>
-        <div class="navbar-collapse collapse" id="navbar-main">
+          <% } else { %>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="/login"><span class="octicon octicon-sign-in"></span> Sign in</a></li>
           </ul>
+          <% } %>
         </div>
-        <% } %>
       </div>
     </div>
 
@@ -273,5 +276,6 @@
         </div>
       </div>
     </div>
+
   </body>
 </html>
