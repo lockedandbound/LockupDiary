@@ -7,6 +7,22 @@ var Lockup = Parse.Object.extend("Lockup");
 
 module.exports = function(app) {
   
+  var authRedirectHelper = function(path) {
+    app.get(path, function(req, res) {
+      var currentUser = Parse.User.current();
+      if (!currentUser) {
+        return res.redirect('/login');
+      }
+      currentUser.fetch().then(function() {
+        res.redirect('/user/'+currentUser.getUsername()+req.path);
+      });
+    });
+  };
+
+  authRedirectHelper('/diary/:year?');
+  authRedirectHelper('/statistics');
+  authRedirectHelper('/settings');
+
   app.get('/user/:user/diary/:year?', function(req, res) {
     var currYear = moment().year();
     var year = parseInt(req.params.year) || currYear;
