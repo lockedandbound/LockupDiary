@@ -1,3 +1,16 @@
+@media (max-width: 768px) {
+  #user-header {
+    text-align: center;
+  }
+}
+
+@media (min-width: 768px) {
+  .profile-picture {
+    float: left;
+    margin-right: 15px;
+  }
+}
+
 .statistic {
   font-size: 48pt;
   margin-bottom: -10px;

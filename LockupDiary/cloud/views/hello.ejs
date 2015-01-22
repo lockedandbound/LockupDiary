@@ -209,10 +209,10 @@
 
     <div class="container">
       <div id="user-header">
-        <img style="float: left; margin-right: 15px;" alt="<%= user %>" class="avatar" height="128" width="128" src="https://avatars0.githubusercontent.com/u/6627868?v=2&amp;s=460">
+        <img class="profile-picture" alt="<%= user %>" class="avatar" height="128" width="128" src="https://avatars0.githubusercontent.com/u/6627868?v=2&amp;s=460">
         <h1 style="margin-top: 0px;"><%= user.getUsername() %></h1>
         <div style="margin-bottom: 5px;">
-          <label>Current status</label>: <%= status %>
+          <label>Current status</label>: <%= status.replace(/\s/g, '&nbsp;') %>
         </div>
         <% if (currentUser && currentUser.id === user.id) { %>
         <% var lockupTarget = locked ? "#endLockupModal" : "#startLockupModal" %>
