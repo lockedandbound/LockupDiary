@@ -2,6 +2,10 @@
   #user-header {
     text-align: center;
   }
+
+  #stats {
+    text-align: center;
+  }
 }
 
 @media (min-width: 768px) {
