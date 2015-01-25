@@ -51,7 +51,7 @@ module.exports = function(app) {
     }).then(function(events) {
       monthMap = {};
       events.each(function(event) {
-        var month = event.sortTime === 'Z' ? 'Z' : moment(event.get('sortTime')).month();
+        var month = event.get('sortTime') === 'Z' ? moment().month() : moment(event.get('sortTime')).month();
         if (!(month in monthMap)) {
           monthMap[month] = [];
         }
