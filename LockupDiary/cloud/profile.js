@@ -21,7 +21,6 @@ module.exports = function(app) {
 
   authRedirectHelper('/diary/:year?');
   authRedirectHelper('/statistics');
-  authRedirectHelper('/settings');
 
   app.get('/user/:user/diary/:year?', function(req, res) {
     var currYear = moment().year();

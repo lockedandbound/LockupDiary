@@ -42,4 +42,37 @@ module.exports = function(app) {
 	  });
 	});
 
+	app.get('/settings', function(req, res) {
+		var err = req.query.err ? 'Current password is incorrect.' : null;
+		var currentUser = Parse.User.current();
+	  if (!currentUser) {
+	    return res.redirect('/login');
+	  }
+	  currentUser.fetch().then(function() {
+	    res.render('settings', {
+	    	user: currentUser,
+	    	error: err
+	    });
+	  });
+	});
+
+	app.post('/settings/change_password', function(req, res) {
+		var user = Parse.User.current();
+	  if (!user) {
+	    return res.redirect('/login');
+	  }
+	  user.fetch().then(function() {
+	  	console.log(user.getUsername());
+	  	console.log(req.body.curr_password);
+	    Parse.User.logIn(user.getUsername(), req.body.curr_password, {
+			  success: function(loginUser) {
+			    res.redirect('/');
+			  },
+			  error: function(loginUser, error) {
+			  	res.redirect('/settings?err=bad_passsword');
+			  }
+			});
+	  });
+	});
+
 }

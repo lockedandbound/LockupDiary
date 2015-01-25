@@ -15,6 +15,14 @@
   }
 }
 
+#error {
+  color: red;
+}
+
+input {
+  max-width: 400px;
+}
+
 .statistic {
   font-size: 48pt;
   margin-bottom: -10px;
