@@ -1,6 +1,9 @@
 module.exports = function(app) {
 
 	app.get('/login', function(req, res) {
+		if (Parse.User.current()) {
+			return res.redirect('/');
+		}
 	  res.render('login', {error: null});
 	});
 
