@@ -53,3 +53,7 @@ input {
   font-weight: 500;
   padding-top: 10px;
 }
+
+#changePasswordLink:hover {
+  cursor: pointer;
+}

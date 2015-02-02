@@ -5,8 +5,55 @@
     <link rel="stylesheet" href="/vendor/bootstrap-slate.min.css">
     <link rel="stylesheet" href="/vendor/octicons/octicons.css">
     <link rel="stylesheet" href="/style.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="/hello.js"></script>
   </head>
   <body style="padding-top:60px;">
+
+    <!-- Change Password Modal -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form id="changePasswordForm" role="form">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+              </button>
+              <h4 class="modal-title" id="myModalLabel">Change Password</h4>
+            </div>
+            <div class="modal-body">
+              <div id="changePasswordError" style="display:none; background-color:red;" class="row">
+              </div>
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <label for="curr_password">Current password</label>
+                  <input type="password" class="form-control" id="curr_password" name="curr_password" placeholder="Enter current password">
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <label for="curr_password">New password</label>
+                  <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Choose new password">
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <label for="curr_password">New password again</label>
+                  <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm new password">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Change password</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <div class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -52,12 +99,9 @@
           </div>
           <div id="error"><%= error ? error : '' %></div>
           <div class="form-group">
-            <label for="curr-password" class="col-lg-2 control-label">Change Password</label>
+            <label for="curr-password" class="col-lg-2 control-label">Password</label>
             <div class="col-lg-10">
-              <input type="password" class="form-control" name="curr_password" placeholder="Enter current password">
-              <input type="password" class="form-control" name="new_password" placeholder="Choose new password">
-              <input type="password" class="form-control" name="confirm_password" placeholder="Confirm new password">
-              <button type="submit" class="btn btn-primary">Submit</button> 
+              <a id="changePasswordLink" data-toggle="modal" data-target="#changePasswordModal">Change password</a>
             </div>
           </div>
         </fieldset>
