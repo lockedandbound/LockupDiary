@@ -87,4 +87,10 @@ module.exports = function(app) {
     });
   });
 
+  app.get('/reset_password', function(req, res) {
+    return res.render('reset_password', {
+      error: null
+    });
+  });
+
 }
