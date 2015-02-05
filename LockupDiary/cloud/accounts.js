@@ -4,7 +4,7 @@ module.exports = function(app) {
     if (Parse.User.current()) {
       return res.redirect('/');
     }
-    res.render('login', {error: null});
+    res.render('login', {error: null, message: req.query.message});
   });
 
   app.post('/login', function(req, res) {
@@ -14,7 +14,7 @@ module.exports = function(app) {
       },
       error: function(user, error) {
         console.error('Error logging in:', error);
-        res.render('login', {error: 'ERROR: ' + error.message});
+        res.render('login', {error: error.message, message: null});
       }
     });
   });
@@ -87,10 +87,36 @@ module.exports = function(app) {
     });
   });
 
-  app.get('/reset_password', function(req, res) {
-    return res.render('reset_password', {
+  app.get('/forgot_password', function(req, res) {
+    return res.render('forgot_password', {
       error: null
     });
+  });
+
+  app.post('/forgot_password', function(req, res) {
+    Parse.User.requestPasswordReset(req.body.email, {
+      success: function() {
+        res.redirect('/login?message='+encodeURIComponent('Email sent'))
+      },
+      error: function(error) {
+        errMsg = error.message;
+        if (error.code != 205) {
+          console.error('Error sending password reset email:', error);
+          errMsg = 'An unexpected error occurred';
+        }
+        res.render('forgot_password', {
+          error: errMsg
+        });
+      }
+    });
+  });
+
+  app.get('/reset_password', function(req, res) {
+    res.render('reset_password');
+  });
+
+  app.get('/reset_password_success', function(req, res) {
+    res.render('reset_password_success');
   });
 
 }

@@ -1,3 +1,5 @@
+var SECRET = 'THIS_IS_A_SECRET';
+
 var _ = require('underscore');
 var moment = require('cloud/vendor/moment');
 
@@ -12,7 +14,7 @@ app.set('views', 'cloud/views');  // Specify the folder to find templates
 app.set('view engine', 'ejs');    // Set the template engine
 app.use(parseExpressHttpsRedirect());
 app.use(express.bodyParser());    // Middleware for reading request body
-app.use(express.cookieParser('THIS_IS_A_SECRET'));
+app.use(express.cookieParser(SECRET));
 app.use(parseExpressCookieSession({ cookie: { maxAge: 3600000 } }));
 
 // Additional routes files

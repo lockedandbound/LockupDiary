@@ -21,7 +21,18 @@
     </div>
 
     <div class="container">
-      <div id="error"><%= error ? error : '' %></div>
+      <% if (message) { %>
+      <div class="alert alert-success" style="max-width:400px; margin:auto; margin-bottom:20px;">
+          <a href="#" class="close" data-dismiss="alert">&times;</a>
+          <strong>Success!</strong> <%= message %>
+      </div>
+      <% } %>
+      <% if (error) { %>
+      <div class="alert alert-danger" style="max-width:400px; margin:auto; margin-bottom:20px;">
+          <a href="#" class="close" data-dismiss="alert">&times;</a>
+          <strong>Error!</strong> <%= error %>.
+      </div>
+      <% } %>
       <div class="bs-component" style="max-width:400px; margin:auto;">
         <form action="/login" method="POST" class="form-horizontal">
           <fieldset>
@@ -44,7 +55,7 @@
               </div>
             </div>
             <div class="form-group col-lg-12">
-              <a href="/reset_password">Forgot username or password</a>
+              <a href="/forgot_password">Forgot username or password</a>
             </div>
             <div class="form-group col-lg-12">
               Not yet registered? <a href="/signup">Sign up</a>.
