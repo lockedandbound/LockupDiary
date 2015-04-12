@@ -109,6 +109,10 @@ app.get('/', function(req, res) {
   });
 });
 
+app.get('/lb', function(req, res) {
+  res.redirect('/user/lockedandbound');
+});
+
 var renderProfile = function(user, res) {
   var end = moment();
   var start = moment(end).subtract(30, 'days');
