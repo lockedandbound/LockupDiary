@@ -182,10 +182,10 @@
     </div>
     
     <% include header.ejs %>
-
+    
     <div class="container">
       <div id="user-header">
-        <img class="profile-picture" alt="<%= user %>" class="avatar" height="128" width="128" src="https://avatars0.githubusercontent.com/u/6627868?v=2&amp;s=460">
+        <img class="profile-picture" alt="<%= user %>" width="128px" height="128px" class="avatar" src="https://www.gravatar.com/avatar/<%= hash %>?r=r&s=128&d=https%3A%2F%2Fwww.lockupdiary.com%2Flock.png">
         <h1 style="margin-top: 0px;"><%= user.getUsername() %></h1>
         <div style="margin-bottom: 5px;">
           <label>Current status</label>: <%= status.replace(/\s/g, '&nbsp;') %>

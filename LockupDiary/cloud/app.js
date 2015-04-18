@@ -2,6 +2,7 @@ var SECRET = 'THIS_IS_A_SECRET';
 
 var _ = require('underscore');
 var moment = require('cloud/vendor/moment');
+var md5 = require('cloud/vendor/md5');
 
 // These two lines are required to initialize Express in Cloud Code.
 var express = require('express');
@@ -154,6 +155,7 @@ var renderProfile = function(user, res) {
     
     res.render('hello', {
       user: user,
+      hash: md5.digest_s(user.getEmail().trim().toLowerCase()),
       currentUser: Parse.User.current(),
       events: events,
       locked: locked,
