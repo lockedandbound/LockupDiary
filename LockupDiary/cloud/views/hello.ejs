@@ -15,6 +15,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="/vendor/bootstrap-datetimepicker.min.js"></script>
     <script src="/hello.js"></script>
+    <% include ga.ejs %>
   </head>
 
   <body style="padding-top:60px;">
@@ -228,7 +229,7 @@
       <div style="clear:both; margin-top:20px;" class="row col-md-12">
         <h2 style="display:inline;">Last 30 days</h2>
         <span id="full-diary-link" class="inline-nav-link">
-          <a href="/user/<%= user.getUsername()%>/diary">&rarr; View full diary</a>
+          <a href="/user/<%= user.getUsername()%>/diary" id="full-diary" class="track">&rarr; View full diary</a>
         </span>
       <hr>
       </div>
@@ -240,7 +241,7 @@
           <div class="statistic"><%= orgasmCount %></div>
           <div class="statistic-title">Number of orgasms</div>
           <div class="inline-nav-link">
-            <a href="/user/<%= user.getUsername()%>/statistics">&rarr; More statistics</a>
+            <a href="/user/<%= user.getUsername()%>/statistics" id="more-statistics" class="track">&rarr; More statistics</a>
           </div>
         </div>
         <div id="events" class="col-md-9">

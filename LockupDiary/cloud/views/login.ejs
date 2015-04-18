@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    
     <meta charset="utf-8">
     <title>Sign in - Lockup Diary</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="/style.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <% include ga.ejs %>
   </head>
 
   <body style="padding-top:60px;">
@@ -51,14 +53,17 @@
             </div>
             <div class="form-group">
               <div class="col-lg-10 col-lg-offset-2">
-                <button type="submit" class="btn btn-primary">Sign in</button>
+                <button type="submit" class="btn btn-primary track" id="sign-in">Sign in</button>
               </div>
             </div>
             <div class="form-group col-lg-12">
-              <a href="/forgot_password">Forgot username or password</a>
+              <a href="/forgot_password" id="forgot-password" class="track">Forgot username or password</a>
             </div>
             <div class="form-group col-lg-12">
-              Not yet registered? <a href="/signup">Sign up</a>.
+              Not yet registered? <a href="/signup" id="sign-up" class="track">Sign up</a>.
+            </div>
+            <div class="form-group col-lg-12">
+              Test element <a id="test" class="track">Click me</a>.
             </div>
           </fieldset>
         </form>

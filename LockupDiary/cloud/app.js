@@ -16,6 +16,10 @@ app.use(parseExpressHttpsRedirect());
 app.use(express.bodyParser());    // Middleware for reading request body
 app.use(express.cookieParser(SECRET));
 app.use(parseExpressCookieSession({ cookie: { maxAge: 3600000 } }));
+app.use(function(req, res, next) {
+  res.locals.currentUser = null;
+  next();
+});
 
 // Additional routes files
 require('cloud/accounts')(app);
