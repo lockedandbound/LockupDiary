@@ -59,7 +59,7 @@
 
     <div class="container">
       <h1>Settings</h1>
-      <form action="/settings/change_password" method="POST" class="form-horizontal">
+      <form class="form-horizontal">
         <fieldset>
           <div class="form-group">
             <label for="username" class="col-lg-2 control-label">Username</label>
@@ -77,7 +77,19 @@
           <div class="form-group">
             <label for="curr-password" class="col-lg-2 control-label">Password</label>
             <div class="col-lg-10">
-              <a id="changePasswordLink" class="track" data-toggle="modal" data-target="#changePasswordModal">Change password</a>
+              <p class="form-control-static">
+                <a id="changePasswordLink" class="track" data-toggle="modal" data-target="#changePasswordModal">Change password</a>
+              </p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="curr-password" class="col-lg-2 control-label">Profile picture</label>
+            <div class="col-lg-10">
+              <p class="form-control-static">
+                <a href="https://en.gravatar.com/emails/" id="settings-change-gravatar" class="track">
+                  Change profile picture via Gravatar
+                </a>
+              </p>
             </div>
           </div>
         </fieldset>
