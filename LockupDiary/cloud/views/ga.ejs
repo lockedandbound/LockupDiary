@@ -13,7 +13,6 @@
   
   $(function() {
     $('.track').each(function(index) {
-      console.log('outer', $(this).attr('id'));
       $(this).on('click', function() {
         ga('send', 'event', $(this).attr('id'), 'click');
       });

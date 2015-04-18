@@ -5,43 +5,45 @@
     <link rel="stylesheet" href="/vendor/bootstrap-slate.min.css">
     <% include ga.ejs %>
   </head>
-  <body>
-    <div class="container">
-    <h1>LockupDiary</h1>
-    <div id="error"><%= error ? error : '' %></div>
-    <div class="bs-component" style="width:400px; margin:auto;">
-      <form action="/signup" method="POST" class="form-horizontal">
-        <fieldset>
-          <legend>Sign up</legend>
-          <div class="form-group">
-            <label for="username" class="col-lg-2 control-label">Username</label>
-            <div class="col-lg-10">
-              <input type="text" class="form-control" name="username" placeholder="Username">
+  <body style="padding-top:60px;">
+    
+    <% include simple_header.ejs %>
+    
+    <div class="container">  
+      <div id="error"><%= error ? error : '' %></div>
+      <div class="bs-component" style="width:400px; margin:auto;">
+        <form action="/signup" method="POST" class="form-horizontal">
+          <fieldset>
+            <legend>Sign up</legend>
+            <div class="form-group">
+              <label for="username" class="col-lg-2 control-label">Username</label>
+              <div class="col-lg-10">
+                <input type="text" class="form-control" name="username" placeholder="Username">
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="email" class="col-lg-2 control-label">Email</label>
-            <div class="col-lg-10">
-              <input type="text" class="form-control" name="email" placeholder="Email">
+            <div class="form-group">
+              <label for="email" class="col-lg-2 control-label">Email</label>
+              <div class="col-lg-10">
+                <input type="text" class="form-control" name="email" placeholder="Email">
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="password" class="col-lg-2 control-label">Password</label>
-            <div class="col-lg-10">
-              <input type="password" class="form-control" name="password" placeholder="Password">
+            <div class="form-group">
+              <label for="password" class="col-lg-2 control-label">Password</label>
+              <div class="col-lg-10">
+                <input type="password" class="form-control" name="password" placeholder="Password">
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <div class="col-lg-10 col-lg-offset-2">
-              <button type="submit" class="btn btn-primary">Sign up!</button>
+            <div class="form-group">
+              <div class="col-lg-10 col-lg-offset-2">
+                <button type="submit" id="sign-up" class="btn btn-primary track">Sign up!</button>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            Already registered? <a href="/login">Sign in</a>.
-          </div>
-        </fieldset>
-      </form>
-    </div>
+            <div class="form-group">
+              Already registered? <a href="/login" id="signup-sign-in" class="track">Sign in</a>.
+            </div>
+          </fieldset>
+        </form>
+      </div>
     </div>
   </body>
 </html>

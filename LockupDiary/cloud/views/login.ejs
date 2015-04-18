@@ -14,13 +14,7 @@
 
   <body style="padding-top:60px;">
 
-    <div class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <a href="/" class="navbar-brand">Lockup Diary</a>
-        </div>
-      </div>
-    </div>
+    <% include simple_header.ejs %>
 
     <div class="container">
       <% if (message) { %>
@@ -61,9 +55,6 @@
             </div>
             <div class="form-group col-lg-12">
               Not yet registered? <a href="/signup" id="sign-up" class="track">Sign up</a>.
-            </div>
-            <div class="form-group col-lg-12">
-              Test element <a id="test" class="track">Click me</a>.
             </div>
           </fieldset>
         </form>

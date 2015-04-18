@@ -1,0 +1,26 @@
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="/" id="header-logo" class="navbar-brand track">Lockup Diary</a>
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-main">
+      <% if (currentUser) { %>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/diary" id="header-diary" class="track"><span class="octicon octicon-calendar"></span> Diary</a></li>
+        <li><a href="/statistics" id="header-statistics" class="track"><span class="octicon octicon-pulse"></span> Statistics</a></li>
+        <li><a href="/settings" id="header-settings" class="track"><span class="octicon octicon-gear"></span> Settings</a></li>
+        <li><a href="/logout" id="header-logout" class="track"><span class="octicon octicon-sign-out"></span> Sign out</a></li>
+      </ul>
+      <% } else { %>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/login" id="header-login" class="track"><span class="octicon octicon-sign-in"></span> Sign in</a></li>
+      </ul>
+      <% } %>
+    </div>
+  </div>
+</div>

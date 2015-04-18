@@ -26,7 +26,7 @@
         <div class="modal-content">
           <form action="/events" id="lockupForm" method="POST" role="form">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">
+              <button type="button" id="start-lockup-close" class="close track" data-dismiss="modal">
                 <span aria-hidden="true">&times;</span>
                 <span class="sr-only">Close</span>
               </button>
@@ -65,8 +65,8 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Start lockup</button>
+              <button type="button" id="start-lockup-cancel" class="btn btn-default track" data-dismiss="modal">Close</button>
+              <button type="submit" id="start-lockup-submit" class="btn btn-primary track">Start lockup</button>
             </div>
           </form>
         </div>
@@ -79,7 +79,7 @@
         <div class="modal-content">
           <form action="/events" id="lockupForm" method="POST" role="form">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">
+              <button type="button" id="end-lockup-close" class="close track" data-dismiss="modal">
                 <span aria-hidden="true">&times;</span>
                 <span class="sr-only">Close</span>
               </button>
@@ -96,8 +96,8 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">End lockup</button>
+              <button type="button" id="end-lockup-cancel" class="btn btn-default track" data-dismiss="modal">Close</button>
+              <button type="submit" id="end-lockup-submit" class="btn btn-primary track">End lockup</button>
             </div>
           </form>
         </div>
@@ -110,7 +110,7 @@
         <div class="modal-content">
           <form action="/events" id="orgasmForm" method="POST" role="form">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">
+              <button type="button" id="orgasm-close" class="close track" data-dismiss="modal">
                 <span aria-hidden="true">&times;</span>
                 <span class="sr-only">Close</span>
               </button>
@@ -173,41 +173,15 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Record orgasm</button>
+              <button type="button" id="orgasm-cancel" class="btn btn-default track" data-dismiss="modal">Close</button>
+              <button type="submit" id="orgasm-submit" class="btn btn-primary track">Record orgasm</button>
             </div>
           </form>
         </div>
       </div>
     </div>
-
-    <!-- Navbar -->
-    <div class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <a href="/" class="navbar-brand">Lockup Diary</a>
-          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-        <div class="navbar-collapse collapse" id="navbar-main">
-          <% if (currentUser) { %>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="/diary"><span class="octicon octicon-calendar"></span> Diary</a></li>
-            <li><a href="/statistics"><span class="octicon octicon-pulse"></span> Statistics</a></li>
-            <li><a href="/settings"><span class="octicon octicon-gear"></span> Settings</a></li>
-            <li><a href="/logout"><span class="octicon octicon-sign-out"></span> Sign out</a></li>
-          </ul>
-          <% } else { %>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="/login"><span class="octicon octicon-sign-in"></span> Sign in</a></li>
-          </ul>
-          <% } %>
-        </div>
-      </div>
-    </div>
+    
+    <% include header.ejs %>
 
     <div class="container">
       <div id="user-header">
@@ -218,10 +192,10 @@
         </div>
         <% if (currentUser && currentUser.id === user.id) { %>
         <% var lockupTarget = locked ? "#endLockupModal" : "#startLockupModal" %>
-        <button class="btn btn-primary" data-toggle="modal" data-target="<%= lockupTarget %>">
+        <button id="toggle-lockup" class="btn btn-primary track" data-toggle="modal" data-target="<%= lockupTarget %>">
           <%= locked ? "End lockup" : "Start lockup" %>
         </button>
-        <button class="btn btn-default" data-toggle="modal" data-target="#orgasmModal">
+        <button id="record-orgasm" class="btn btn-default track" data-toggle="modal" data-target="#orgasmModal">
           Record orgasm
         </button>
         <% } %>
