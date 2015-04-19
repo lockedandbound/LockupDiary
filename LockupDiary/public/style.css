@@ -57,3 +57,7 @@ input {
 #changePasswordLink:hover {
   cursor: pointer;
 }
+
+th, td {
+  padding: 10px;
+}

@@ -18,7 +18,7 @@ app.use(express.bodyParser());    // Middleware for reading request body
 app.use(express.cookieParser(SECRET));
 app.use(parseExpressCookieSession({ cookie: { maxAge: 3600000 } }));
 app.use(function(req, res, next) {
-  res.locals.currentUser = null;
+  res.locals.currentUser = Parse.User.current();
   next();
 });
 
@@ -40,29 +40,37 @@ console.error = logConstructor(console.error);
 console.warn = logConstructor(console.warn);
 
 // Data types
-var Event = Parse.Object.extend("Event");
-var Orgasm = Parse.Object.extend("Orgasm");
-var Lockup = Parse.Object.extend("Lockup");
+var Event = Parse.Object.extend('Event');
+var Orgasm = Parse.Object.extend('Orgasm');
+var Lockup = Parse.Object.extend('Lockup');
+var Statistic = Parse.Object.extend('Statistic');
 
 var calculatePercentageLocked = function(intervalStart, intervalEnd, events) {
   var msLocked = 0;
   events.each(function(event) {
     if (event.get('type') == 'lockup') {
-      var start = moment(event.get('event').start_datetime);
-      var end = event.get('event').end_datetime ? moment(event.get('event').end_datetime) : null;
-      if ((!end || end > intervalStart) || (start < intervalEnd && start > intervalStart)) {
-        if (start < intervalStart) {
-          start = intervalStart;
-        }
-        if (!end) {
-          end = intervalEnd;
-        }
-        msLocked += end.diff(start);
-      }
+      msLocked += getDurationInMillis(intervalStart, intervalEnd, event);
     }
   });
   return (msLocked / intervalEnd.diff(intervalStart) * 100).toFixed(1)+"%";
 };
+
+var getDurationInMillis = function(intervalStart, intervalEnd, event) {
+  var start = moment(event.get('event').start_datetime);
+  var end = event.get('event').end_datetime ? moment(event.get('event').end_datetime) : intervalEnd;
+  if (end < intervalStart || start > intervalEnd) {
+    return 0;
+  }
+  else {
+    if (start < intervalStart) {
+      start = intervalStart;
+    }
+    if (end > intervalEnd) {
+      end = intervalEnd;
+    }
+    return end.diff(start);
+  }
+}
 
 var calculateOrgasmCount = function(intervalStart, intervalEnd, events) {
   var orgasms = 0;
@@ -149,7 +157,6 @@ var renderProfile = function(user, res) {
       status = 'UNLOCKED';
     }
     
-    
     var percentLocked = calculatePercentageLocked(start, end, events);
     var orgasmCount = calculateOrgasmCount(start, end, events);
     
@@ -184,6 +191,107 @@ app.get('/user/:user', function(req, res) {
       console.error('Looking up user:', error);
       res.send(500, 'ERROR: ' + error.message);
     }
+  });
+});
+
+app.get('/test', function(req, res) {
+  var user;
+  var month2statistic = {};
+  var userQuery = new Parse.Query(Parse.User);
+  userQuery.equalTo('username', 'lockedandbound');
+  userQuery.first().then(function(foundUser) {
+    if (!foundUser) {
+      return res.send(200, 'No such user');  //TODO: update to 404 once have 404 page
+    }
+    var query = new Parse.Query(Event);
+    query.equalTo('user', foundUser);
+    query.limit(1000);
+    user = foundUser;
+    return query.find();
+  }).then(function(events) {
+    for (var i = 0; i < events.length; i++) {
+      var event = events[i];
+      if (event.get('type') === 'orgasm') {
+        var dtParts = event.get('event').datetime.split('-');
+        var month = dtParts[0]+'-'+dtParts[1];
+        createStatIfNeeded(user, month2statistic, month);
+        month2statistic[month].increment('orgasmCount');
+      }
+      else {  // event.get('type') === 'lockup'
+        var endMonthStart = (event.get('event').end_datetime ? moment() : moment(event.get('event').end_datetime)).startOf('month');
+        updateLockedStat(user, endMonthStart, month2statistic, event);
+        
+        var startMonthStart = moment(event.get('event').start_datetime).startOf('month');
+        if (startMonthStart.toISOString() !== endMonthStart.toISOString()) {
+          updateLockedStat(user, startMonthStart, month2statistic, event);
+        }
+      }
+    }
+    var statsToSave = [];
+    var months = Object.keys(month2statistic);
+    for (i=0; i<months.length; i++) {
+      statsToSave.push(month2statistic[months[i]]);
+    }
+    return Parse.Object.saveAll(statsToSave);
+  }).then(function(reports) {
+    console.log(reports);
+    res.json(200, {'success': true});
+  }, function(error) {
+    console.log('Error updating reports:', error);
+    res.json(500, {'success': false, 'message': 'An unexpected error occurred.'});
+  });
+});
+
+var updateLockedStat = function(user, monthStart, month2statistic, event) {
+  var monthEnd = moment(monthStart).endOf('month');
+  var dtParts = monthStart.toISOString().split('-');
+  var month = dtParts[0]+'-'+dtParts[1];
+  createStatIfNeeded(user, month2statistic, month);
+  month2statistic[month].increment('lockedMillis', getDurationInMillis(monthStart, monthEnd, event));
+};
+
+var createStatIfNeeded = function(user, month2statistic, month) {
+  if (!(month in month2statistic)) {
+    month2statistic[month] = new Statistic({
+      user: user,
+      month: month,
+      orgasmCount: 0,
+      lockedMillis: 0,
+      totalMillis: getTotalMillis(month.split('-')[1])
+    });
+  }
+};
+
+var getTotalMillis = function(month) {
+  var totalMillis = 2678400000;
+  if (month === '02') {
+    totalMillis = 2419200000;
+  }
+  else if (['09', '04', '06', '11'].indexOf()) {
+    totalMillis = 2592000000;
+  }
+  return totalMillis;
+};
+  
+app.get('/user/:user/statistics', function(req, res) {
+  var userQuery = new Parse.Query(Parse.User);
+  userQuery.equalTo('username', req.params.user);
+  userQuery.first().then(function(user) {
+    if (!user) {
+      return res.send(200, 'No such user');  //TODO: update to 404 once have 404 page
+    }
+    var statsQuery = new Parse.Query(Statistic);
+    statsQuery.equalTo('user', user);
+    statsQuery.ascending('month');
+    return statsQuery.collection().fetch();
+  }).then(function(statistics) {
+    res.render('statistics', {
+      username: req.params.user,
+      statistics: statistics
+    })
+  }, function(error) {
+    console.log('Error retrieveing statistics:', error);
+    res.send(500, 'ERROR:' + error);
   });
 });
 

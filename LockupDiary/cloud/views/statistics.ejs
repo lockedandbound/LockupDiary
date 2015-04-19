@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lockup Diary</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/vendor/bootstrap-slate.min.css">
+    <link rel="stylesheet" href="/vendor/octicons/octicons.css">
+    <link rel="stylesheet" href="/style.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="/vendor/moment.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="/vendor/bootstrap-datetimepicker.min.js"></script>
+    <script src="/hello.js"></script>
+    <% include ga.ejs %>
+  </head>
+  <body style="padding-top: 60px;">
+
+    <% include header.ejs %>
+
+    <div class="container">
+      <div id="user-header">
+        <h1 style="margin-top: 0px;"><%= username %>'s Statistics</h1>
+      </div>
+      
+      <table>
+        <tr>
+          <th>Month</th><th>Number of Orgasms</th><th>Percentage of Time Locked</th>
+        </tr>
+        <% statistics.each(function(statistic) { %>
+        <tr>
+          <td><%= statistic.get('month') %></td>
+          <td><%= statistic.get('orgasmCount') %></td>
+          <td><%= statistic.get('lockedMillis')/statistic.get('totalMillis')*100 %></td>
+        </tr>
+        <% }) %>
+      </table>
+<!--       <div id="Orgasms">
+        <h2>Orgasms Per Month</h2>
+        <% statistics.each(function(statistic) { %>
+        <div><%= statistic.get('month') %>: <%= statistic.get('orgasmCount') %></div>
+        <% }) %>
+      </div> -->
+    </div>
+  </body>
+</html>
