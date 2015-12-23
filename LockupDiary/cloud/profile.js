@@ -44,6 +44,7 @@ module.exports = function(app) {
         var eventQuery = Parse.Query.or(activeQuery, eventQuery);
       }
       eventQuery.descending('sortTime');
+      eventQuery.limit(1000);
       return eventQuery.collection().fetch();
     }, function(error) {
       console.log('Erorr retrieving user:', error);
