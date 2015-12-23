@@ -47,7 +47,7 @@ var Statistic = Parse.Object.extend('Statistic');
 
 var calculatePercentageLocked = function(intervalStart, intervalEnd, events) {
   var msLocked = 0;
-  events.each(function(event) {
+  events.forEach(function(event) {
     if (event.get('type') == 'lockup') {
       msLocked += getDurationInMillis(intervalStart, intervalEnd, event);
     }
@@ -74,7 +74,7 @@ var getDurationInMillis = function(intervalStart, intervalEnd, event) {
 
 var calculateOrgasmCount = function(intervalStart, intervalEnd, events) {
   var orgasms = 0;
-  events.each(function(event) {
+  events.forEach(function(event) {
     if (event.get('type') == 'orgasm') {
       var datetime = moment(event.get('event').datetime);
       if (intervalStart <= datetime && datetime <= intervalEnd) {
@@ -142,11 +142,11 @@ var renderProfile = function(user, res) {
   
   var eventQuery = Parse.Query.or(activeQuery, recentQuery);
   eventQuery.descending('sortTime');
-  eventQuery.collection().fetch().then(function(events) {
+  eventQuery.find().then(function(events) {
     var locked = false;
     var status, lockupId, first;
     if (events.length > 0) {
-      first = events.at(0);
+      first = events[0];
       locked = first.get('type') == 'lockup' && !first.get('event').end_datetime;
     }
     if (locked) {
@@ -162,6 +162,7 @@ var renderProfile = function(user, res) {
     
     res.render('hello', {
       user: user,
+      username: user.getUsername(),
       hash: md5.digest_s(user.getEmail().trim().toLowerCase()),
       currentUser: Parse.User.current(),
       events: events,

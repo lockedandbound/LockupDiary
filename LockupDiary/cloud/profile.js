@@ -63,7 +63,7 @@ module.exports = function(app) {
         username: req.params.user,
         currentUser: Parse.User.current(),
         year: year,
-        events: monthMap
+        monthToEvents: monthMap
       });
     }, function(error) {
       console.log('Error retrieving events:', error);

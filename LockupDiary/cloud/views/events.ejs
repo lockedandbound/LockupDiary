@@ -1,0 +1,33 @@
+<% var iconMap = {orgasm: 'rocket', lockup: 'lock'}; %>
+<% var textMap = {inPersonKeyholder: 'locked by an in-person keyholder', onlineKeyholder: 'locked by an online keyholder', selfLocked: 'self-locked'}; %>
+<% events.forEach(function(event) { %>
+   <% var ldEvent = JSON.parse(JSON.stringify(event.get("event"))); %>
+   <div class="discussion-item discussion-item-assigned">
+    <div class="discussion-item-header" id="event-145938144">
+      <span class="octicon octicon-<%= iconMap[event.get('type')] %> discussion-item-icon"></span>
+      <div>
+        <% if (event.get('type') == 'lockup') { %>
+          <%= username + ' was ' %><span class="event"><%=textMap[ldEvent.keyholder_status]%></span><%=' for ' + ldEvent.duration %><br>
+        <ul class="lockup-list">
+          <% if (ldEvent.end_datetime) { %>
+            <li>Lockup end: <time class="timestamp"><%= ldEvent.end_datetime %></time><br>
+            <% if (ldEvent.end_notes) { %>
+              &#8627; <%= ldEvent.end_notes %></li>
+            <% } %>
+          <% } %>
+          <li>Lockup start: <time class="timestamp"><%= ldEvent.start_datetime %></time><br/>
+            <% if (ldEvent.start_notes) { %>
+              &#8627; <%= ldEvent.start_notes %>
+            <% } %>
+          </li>
+        </ul>
+        <% } %>
+        <% if (event.get('type') == 'orgasm') { %>
+          <%= username + ' recorded an ' %><span class="event">orgasm</span>.
+          <time class="timestamp"><%= ldEvent.datetime %></time><br/>
+        <%= ldEvent.notes %>
+        <% } %>
+      </div>
+    </div>
+  </div>
+<% }) %>

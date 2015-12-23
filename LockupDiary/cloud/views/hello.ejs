@@ -186,7 +186,7 @@
     <div class="container">
       <div id="user-header">
         <img class="profile-picture" alt="<%= user %>" width="128px" height="128px" class="avatar" src="https://www.gravatar.com/avatar/<%= hash %>?r=r&s=128&d=https%3A%2F%2Fwww.lockupdiary.com%2Flock.png">
-        <h1 style="margin-top: 0px;"><%= user.getUsername() %></h1>
+        <h1 style="margin-top: 0px;"><%= username %></h1>
         <div style="margin-bottom: 5px;">
           <label>Current status</label>: <%= status.replace(/\s/g, '&nbsp;') %>
         </div>
@@ -203,7 +203,7 @@
       <div style="clear:both; margin-top:20px;" class="row col-md-12">
         <h2 style="display:inline;">Last 30 days</h2>
         <span id="full-diary-link" class="inline-nav-link">
-          <a href="/user/<%= user.getUsername()%>/diary" id="full-diary" class="track">&rarr; View full diary</a>
+          <a href="/user/<%= username %>/diary" id="full-diary" class="track">&rarr; View full diary</a>
         </span>
       <hr>
       </div>
@@ -215,43 +215,11 @@
           <div class="statistic"><%= orgasmCount %></div>
           <div class="statistic-title">Number of orgasms</div>
           <div class="inline-nav-link">
-            <a href="/user/<%= user.getUsername()%>/statistics" id="more-statistics" class="track">&rarr; More statistics</a>
+            <a href="/user/<%= username %>/statistics" id="more-statistics" class="track">&rarr; More statistics</a>
           </div>
         </div>
         <div id="events" class="col-md-9">
-          <% var iconMap = {orgasm: 'rocket', lockup: 'lock'}; %>
-          <% var textMap = {inPersonKeyholder: 'locked by an in-person keyholder', onlineKeyholder: 'locked by an online keyholder', selfLocked: 'self-locked'}; %>
-          <% events.each(function(event) { %>
-             <% var ldEvent = JSON.parse(JSON.stringify(event.get("event"))); %>
-             <div class="discussion-item discussion-item-assigned">
-              <div class="discussion-item-header" id="event-145938144">
-                <span class="octicon octicon-<%= iconMap[event.get('type')] %> discussion-item-icon"></span>
-                <div>
-                  <% if (event.get('type') == 'lockup') { %>
-                    <%= user.getUsername() + ' was ' %><span class="event"><%=textMap[ldEvent.keyholder_status]%></span><%=' for ' + ldEvent.duration %><br>
-                  <ul class="lockup-list">
-                    <% if (ldEvent.end_datetime) { %>
-                      <li>Lockup end: <time class="timestamp"><%= ldEvent.end_datetime %></time><br>
-                      <% if (ldEvent.end_notes) { %>
-                        &#8627; <%= ldEvent.end_notes %></li>
-                      <% } %>
-                    <% } %>
-                    <li>Lockup start: <time class="timestamp"><%= ldEvent.start_datetime %></time><br/>
-                      <% if (ldEvent.start_notes) { %>
-                        &#8627; <%= ldEvent.start_notes %>
-                      <% } %>
-                    </li>
-                  </ul>
-                  <% } %>
-                  <% if (event.get('type') == 'orgasm') { %>
-                    <%= user.getUsername() + ' recorded an ' %><span class="event">orgasm</span>.
-                    <time class="timestamp"><%= ldEvent.datetime %></time><br/>
-                  <%= ldEvent.notes %>
-                  <% } %>
-                </div>
-              </div>
-            </div>
-          <% }) %>
+          <% include events.ejs %>
         </div>
       </div>
     </div>

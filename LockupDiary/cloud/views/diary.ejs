@@ -35,43 +35,11 @@
         7: "August", 8: "September", 9: "October", 10: "November", 11: "December"}%>
       <% for (var i=11; i>=0; i--) { %>
       <div>
-      <% if (events[i]) { %>
+      <% if (monthToEvents[i]) { %>
         <h3><%= monthNames[i] %></h3>
-
         <div id="events" class="col-md-12">
-          <% var iconMap = {orgasm: 'rocket', lockup: 'lock'}; %>
-          <% var textMap = {inPersonKeyholder: 'locked by an in-person keyholder', onlineKeyholder: 'locked by an online keyholder', selfLocked: 'self-locked'}; %>
-          <% for (var j in events[i]) { %>
-            <% var event = events[i][j] %>
-            <% var ldEvent = JSON.parse(JSON.stringify(event.get("event"))); %>
-            <div class="discussion-item discussion-item-assigned">
-              <div class="discussion-item-header">
-                <span class="octicon octicon-<%= iconMap[event.get('type')] %> discussion-item-icon"></span>
-                <div>
-                  <% if (event.get('type') == 'lockup') { %>
-                    <%= username + ' was ' %><span class="event"><%=textMap[ldEvent.keyholder_status]%></span><%=' for ' + ldEvent.duration %><br>
-                    <ul class="lockup-list">
-                      <% if (ldEvent.end_datetime) { %>
-                        <li>Lockup end: <time class="timestamp"><%= ldEvent.end_datetime %></time><br>
-                          <% if (ldEvent.end_notes) { %>
-                            &#8627; <%= ldEvent.end_notes %>
-                          <% } %>
-                        </li>
-                      <% } %>
-                      <li>Lockup start: <time class="timestamp"><%= ldEvent.start_datetime %></time><br/>
-                        &#8627; <%= ldEvent.start_notes %>
-                      </li>
-                    </ul>
-                  <% } %>
-                  <% if (event.get('type') == 'orgasm') { %>
-                    <%= username + ' recorded an ' %><span class="event">orgasm</span>.
-                    <time class="timestamp"><%= ldEvent.datetime %></time><br/>
-                    <%= ldEvent.notes %>
-                  <% } %>
-                </div>
-              </div>
-            </div>
-          <% } %>
+          <% var events = monthToEvents[i]; %>
+          <% include events.ejs %>
         </div>
       <% } %>
     <% } %>
