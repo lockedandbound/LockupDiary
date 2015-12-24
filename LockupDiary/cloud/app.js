@@ -219,13 +219,15 @@ app.get('/test', function(req, res) {
         month2statistic[month].increment('orgasmCount');
       }
       else {  // event.get('type') === 'lockup'
-        var endMonthStart = (event.get('event').end_datetime ? moment() : moment(event.get('event').end_datetime)).startOf('month');
-        updateLockedStat(user, endMonthStart, month2statistic, event);
-        
-        var startMonthStart = moment(event.get('event').start_datetime).startOf('month');
-        if (startMonthStart.toISOString() !== endMonthStart.toISOString()) {
-          updateLockedStat(user, startMonthStart, month2statistic, event);
+        var currMonth = event.get('event').start_datetime.substring(0, 7);
+        var endMonth = (event.get('event').end_datetime ? event.get('event').end_datetime : moment().toISOString()).substring(0, 7);
+        while (currMonth != endMonth) {
+          createStatIfNeeded(user, month2statistic, currMonth);
+          updateLockedStat(currMonth, month2statistic, event);
+          currMonth = getNextMonth(currMonth);
         }
+        createStatIfNeeded(user, month2statistic, currMonth);
+        updateLockedStat(currMonth, month2statistic, event);
       }
     }
     var statsToSave = [];
@@ -235,21 +237,31 @@ app.get('/test', function(req, res) {
     }
     return Parse.Object.saveAll(statsToSave);
   }).then(function(reports) {
-    console.log(reports);
     res.json(200, {'success': true});
   }, function(error) {
-    console.log('Error updating reports:', error);
+    console.error('Error updating reports:', error);
     res.json(500, {'success': false, 'message': 'An unexpected error occurred.'});
   });
 });
 
-var updateLockedStat = function(user, monthStart, month2statistic, event) {
-  var monthEnd = moment(monthStart).endOf('month');
-  var dtParts = monthStart.toISOString().split('-');
-  var month = dtParts[0]+'-'+dtParts[1];
-  createStatIfNeeded(user, month2statistic, month);
-  month2statistic[month].increment('lockedMillis', getDurationInMillis(monthStart, monthEnd, event));
-};
+var getNextMonth = function(currMonth) {
+  var parts = currMonth.split('-');
+  var year = parseInt(parts[0]);
+  var month = parseInt(parts[1].slice(0, 1) === '0' ? parts[1].slice(1) : parts[1]);
+  if (month < 12) {
+    var nextMonth = month + 1;
+    return year.toString() + '-' + (nextMonth < 10 ? '0' : '') + nextMonth.toString();
+  }
+  else {
+    return (year+1).toString() + '-01';
+  }
+}
+
+var updateLockedStat = function(month, month2statistic, event) {
+  var start = moment.utc(month+'-01');
+  var end = event.get('event').event_time ? moment(start).endOf('month') : moment();
+  month2statistic[month].increment('lockedMillis', getDurationInMillis(start, end, event));
+}
 
 var createStatIfNeeded = function(user, month2statistic, month) {
   if (!(month in month2statistic)) {
